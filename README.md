@@ -8,6 +8,8 @@ VisaFlow — Telegram Mini App для самостоятельной подго�
 
 - [PRD](docs/PRD.md) — проблема, аудитория, цели и границы MVP.
 - [SRS](docs/SRS.md) — функциональные и нефункциональные требования.
+- [Архитектура](docs/architecture.md) — общая архитектурная идея, потоки и отложенные решения.
+- [Engineering Guidelines](docs/engineering-guidelines.md) — выбранный дизайн системы, code style и критерии качества.
 - [User stories](docs/user-stories.md) — пользовательские истории и критерии приемки.
 - [Матрица трассировки](docs/traceability-matrix.md) — связь целей, требований, историй и тестов.
 

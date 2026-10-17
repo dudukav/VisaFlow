@@ -1,0 +1,26 @@
+@startuml VisaFlow_C1_System_Context
+!include <C4/C4_Context>
+
+title VisaFlow — C1 System Context
+
+LAYOUT_LEFT_RIGHT()
+
+Person(applicant, "Applicant", "Самостоятельно готовит туристическую визовую заявку")
+Person(admin, "Administrator", "Проверяет источники, публикует ruleset и контролирует health")
+
+System(visaflow, "VisaFlow", "Формирует персональный checklist, проверяет документы, рассчитывает сроки и отправляет уведомления")
+
+System_Ext(telegram, "Telegram", "Запускает Mini App, передаёт подписанный initData и доставляет сообщения через Bot API")
+System_Ext(official_sources, "Официальные источники", "Публичные HTML/PDF с визовыми требованиями")
+System_Ext(visa_portals, "Визовые порталы", "Официальные страницы записи и, при допустимости, источник availability")
+
+Rel(applicant, telegram, "Открывает Mini App")
+Rel(applicant, visaflow, "Создаёт заявку, загружает документы и получает checklist")
+Rel(admin, visaflow, "Публикует ruleset, управляет feature flags и просматривает health")
+Rel(telegram, visaflow, "Передаёт initData и delivery status", "HTTPS")
+Rel(visaflow, telegram, "Отправляет уведомления", "Telegram Bot API")
+Rel(visaflow, official_sources, "По команде Administrator сохраняет snapshot источника", "HTTPS")
+Rel(visaflow, visa_portals, "Открывает official links и проверяет availability при разрешении", "HTTPS")
+
+SHOW_LEGEND()
+@enduml
