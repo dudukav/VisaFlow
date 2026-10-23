@@ -1,0 +1,1629 @@
+openapi: 3.0.3
+info:
+  title: VisaFlow API
+  version: 0.1.0
+  description: |
+    Contract between the VisaFlow clients and the Go core for the MVP.
+    Long-running document, deletion, notification, and monitoring work is asynchronous.
+    A `passed` document check never guarantees that a visa will be issued.
+servers:
+  - url: /api/v1
+    description: Same-origin API
+tags:
+  - name: Auth
+  - name: Profile
+  - name: Applications
+  - name: Checklist
+  - name: Documents
+  - name: Appointments
+  - name: Billing
+  - name: Admin rules
+  - name: Admin operations
+security:
+  - bearerAuth: []
+paths:
+  /auth/telegram:
+    post:
+      tags: [Auth]
+      operationId: authenticateWithTelegram
+      security: []
+      summary: Exchange verified Telegram Mini App init data for a session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramAuthRequest'
+      responses:
+        '200':
+          description: Existing profile authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        '201':
+          description: Profile created and authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /auth/session:
+    delete:
+      tags: [Auth]
+      operationId: endSession
+      summary: Revoke the current session
+      responses:
+        '204':
+          description: Session revoked
+  /me:
+    get:
+      tags: [Profile]
+      operationId: getCurrentUser
+      summary: Return the current user and active consent state
+      responses:
+        '200':
+          description: Current profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+  /consents/current:
+    get:
+      tags: [Profile]
+      operationId: getCurrentConsent
+      summary: Return the currently required document-processing consent
+      responses:
+        '200':
+          description: Current consent text and acceptance state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consent'
+  /consents/current/acceptance:
+    put:
+      tags: [Profile]
+      operationId: acceptCurrentConsent
+      summary: Accept the current consent version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptConsentInput'
+      responses:
+        '200':
+          description: Consent accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentAcceptance'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /notification-preferences:
+    get:
+      tags: [Profile]
+      operationId: getNotificationPreferences
+      responses:
+        '200':
+          description: Notification preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+    patch:
+      tags: [Profile]
+      operationId: updateNotificationPreferences
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationPreferencesInput'
+      responses:
+        '200':
+          description: Updated preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+  /applications:
+    get:
+      tags: [Applications]
+      operationId: listApplications
+      summary: List applications owned by the current user
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Application page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPage'
+    post:
+      tags: [Applications]
+      operationId: createApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationInput'
+      responses:
+        '201':
+          description: Draft application created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}:
+    parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+    get:
+      tags: [Applications]
+      operationId: getApplication
+      responses:
+        '200':
+          description: Application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Applications]
+      operationId: updateApplication
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/ApplicationPatch'
+      responses:
+        '200':
+          description: Updated application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}/close:
+    post:
+      tags: [Applications]
+      operationId: closeApplication
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Application closed; document retention deadline scheduled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /applications/{applicationId}/members:
+    parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+    get:
+      tags: [Applications]
+      operationId: listFamilyMembers
+      responses:
+        '200':
+          description: Family members
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMemberList'
+    post:
+      tags: [Applications]
+      operationId: createFamilyMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberInput'
+      responses:
+        '201':
+          description: Family member created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMember'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}/members/{memberId}:
+    parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/MemberId'
+    patch:
+      tags: [Applications]
+      operationId: updateFamilyMember
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberPatch'
+      responses:
+        '200':
+          description: Updated family member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMember'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+    delete:
+      tags: [Applications]
+      operationId: deleteFamilyMember
+      responses:
+        '204':
+          description: Family member deleted
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /applications/{applicationId}/checklist:
+    parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+    get:
+      tags: [Checklist]
+      operationId: getChecklist
+      responses:
+        '200':
+          description: Generated checklist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags: [Checklist]
+      operationId: generateChecklist
+      summary: Generate a checklist using the current published ruleset
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '201':
+          description: Checklist generated and ruleset pinned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}/checklist/recalculate:
+    post:
+      tags: [Checklist]
+      operationId: recalculateChecklist
+      summary: Explicitly rebuild a checklist using the latest published ruleset
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Checklist recalculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /applications/{applicationId}/checklist/items/{itemId}:
+    patch:
+      tags: [Checklist]
+      operationId: updateChecklistItem
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/ChecklistItemId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateChecklistItemInput'
+      responses:
+        '200':
+          description: Updated item and aggregate progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateChecklistItemResult'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /applications/{applicationId}/deadlines:
+    get:
+      tags: [Checklist]
+      operationId: listDeadlines
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Calculated deadlines
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeadlineList'
+  /applications/{applicationId}/documents:
+    get:
+      tags: [Documents]
+      operationId: listDocuments
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Document metadata only
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentList'
+  /applications/{applicationId}/documents/upload-requests:
+    post:
+      tags: [Documents]
+      operationId: createDocumentUploadRequest
+      summary: Create a single-object, time-limited upload URL
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentUploadInput'
+      responses:
+        '201':
+          description: Upload request created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUploadRequest'
+        '409':
+          $ref: '#/components/responses/ConsentRequired'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}/documents/{documentId}/upload-completion:
+    post:
+      tags: [Documents]
+      operationId: completeDocumentUpload
+      summary: Confirm upload and enqueue validation, malware scan, and OCR
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/DocumentId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteDocumentUploadInput'
+      responses:
+        '202':
+          description: Processing accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /applications/{applicationId}/documents/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Documents]
+      operationId: getDocument
+      responses:
+        '200':
+          description: Document processing state and metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Documents]
+      operationId: deleteDocument
+      summary: Enqueue idempotent deletion of the file and derived OCR data
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '202':
+          description: Deletion accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+  /applications/{applicationId}/documents/{documentId}/extracted-fields:
+    get:
+      tags: [Documents]
+      operationId: getExtractedDocumentFields
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: OCR fields awaiting or reflecting user confirmation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractedFields'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    put:
+      tags: [Documents]
+      operationId: confirmExtractedDocumentFields
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/DocumentId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmExtractedFieldsInput'
+      responses:
+        '202':
+          description: Fields confirmed and rule checks accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /applications/{applicationId}/documents/{documentId}/checks:
+    get:
+      tags: [Documents]
+      operationId: listDocumentChecks
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Explainable deterministic checks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentChecks'
+  /applications/{applicationId}/appointment:
+    get:
+      tags: [Appointments]
+      operationId: getAppointmentOptions
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Verified official URL and adapter capabilities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentOptions'
+  /applications/{applicationId}/appointment/monitoring:
+    put:
+      tags: [Appointments]
+      operationId: setAppointmentMonitoring
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAppointmentMonitoringInput'
+      responses:
+        '200':
+          description: Monitoring preference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentMonitoring'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /orders:
+    post:
+      tags: [Billing]
+      operationId: createTestOrder
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderInput'
+      responses:
+        '201':
+          description: Test order created; no payment details are accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /orders/{orderId}/test-confirmation:
+    post:
+      tags: [Billing]
+      operationId: confirmTestOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Order transitioned to paid_test
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /admin/rulesets:
+    get:
+      tags: [Admin rules]
+      operationId: listRulesets
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/RulesetStatus'
+      responses:
+        '200':
+          description: Rulesets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesetList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [Admin rules]
+      operationId: createRulesetDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRulesetInput'
+      responses:
+        '201':
+          description: Draft ruleset created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ruleset'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/rulesets/{rulesetId}:
+    parameters:
+      - $ref: '#/components/parameters/RulesetId'
+    get:
+      tags: [Admin rules]
+      operationId: getRuleset
+      responses:
+        '200':
+          description: Ruleset including rules and source diff
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ruleset'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    put:
+      tags: [Admin rules]
+      operationId: replaceRulesetDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceRulesetInput'
+      responses:
+        '200':
+          description: Draft replaced
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ruleset'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /admin/rulesets/{rulesetId}/publish:
+    post:
+      tags: [Admin rules]
+      operationId: publishRuleset
+      parameters:
+        - $ref: '#/components/parameters/RulesetId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Immutable published ruleset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ruleset'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  /admin/sources/{sourceId}/snapshots:
+    post:
+      tags: [Admin rules]
+      operationId: captureSourceSnapshot
+      parameters:
+        - $ref: '#/components/parameters/SourceId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '202':
+          description: Source snapshot capture accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperation'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/health:
+    get:
+      tags: [Admin operations]
+      operationId: getAdminHealth
+      summary: Return worker and adapter health without document content
+      responses:
+        '200':
+          description: Component health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentHealthList'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/adapters/{adapterId}:
+    patch:
+      tags: [Admin operations]
+      operationId: updateAdapter
+      parameters:
+        - name: adapterId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdapterInput'
+      responses:
+        '200':
+          description: Adapter state updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentHealth'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/audit-events:
+    get:
+      tags: [Admin operations]
+      operationId: listAuditEvents
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: PII-free audit event page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventPage'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque-session-token
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    ChecklistItemId:
+      name: itemId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    RulesetId:
+      name: rulesetId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    SourceId:
+      name: sourceId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: UUID generated by the client and reused only when retrying the same command.
+      schema:
+        type: string
+        format: uuid
+    Cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    Unauthorized:
+      description: Authentication is missing or invalid
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Forbidden:
+      description: The authenticated actor is not allowed to perform this operation
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: Resource does not exist or is not visible to this actor
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Conflict:
+      description: The command conflicts with the current resource state
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    ConsentRequired:
+      description: The current document-processing consent must be accepted first
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    ValidationFailed:
+      description: One or more input fields are invalid
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblem'
+  schemas:
+    Uuid:
+      type: string
+      format: uuid
+    Country:
+      type: string
+      enum: [IT, ES, JP]
+    VisaType:
+      type: string
+      enum: [tourist]
+    UserRole:
+      type: string
+      enum: [applicant, administrator]
+    TelegramAuthRequest:
+      type: object
+      additionalProperties: false
+      required: [initData]
+      properties:
+        initData:
+          type: string
+          minLength: 1
+    AuthSession:
+      type: object
+      required: [accessToken, expiresAt, user]
+      properties:
+        accessToken:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/UserProfile'
+    UserProfile:
+      type: object
+      required: [id, role, telegramDisplayName, hasCurrentConsent]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        role:
+          $ref: '#/components/schemas/UserRole'
+        telegramDisplayName:
+          type: string
+        hasCurrentConsent:
+          type: boolean
+    Consent:
+      type: object
+      required: [version, title, body, effectiveAt, accepted]
+      properties:
+        version:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        effectiveAt:
+          type: string
+          format: date-time
+        accepted:
+          type: boolean
+        acceptedAt:
+          type: string
+          format: date-time
+          nullable: true
+    ConsentAcceptance:
+      type: object
+      required: [version, acceptedAt]
+      properties:
+        version:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+    AcceptConsentInput:
+      type: object
+      additionalProperties: false
+      required: [version]
+      properties:
+        version:
+          type: string
+    NotificationPreferences:
+      type: object
+      required: [nonCriticalTelegramEnabled, updatedAt]
+      properties:
+        nonCriticalTelegramEnabled:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateNotificationPreferencesInput:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        nonCriticalTelegramEnabled:
+          type: boolean
+    ApplicationStatus:
+      type: string
+      enum: [draft, active, closed]
+    ApplicationInput:
+      type: object
+      additionalProperties: false
+      required: [country, visaType, purpose, tripStartsOn, tripEndsOn, submissionCity]
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        visaType:
+          $ref: '#/components/schemas/VisaType'
+        purpose:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tripStartsOn:
+          type: string
+          format: date
+        tripEndsOn:
+          type: string
+          format: date
+        submissionCity:
+          type: string
+          minLength: 1
+          maxLength: 120
+    ApplicationPatch:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        visaType:
+          $ref: '#/components/schemas/VisaType'
+        purpose:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tripStartsOn:
+          type: string
+          format: date
+        tripEndsOn:
+          type: string
+          format: date
+        submissionCity:
+          type: string
+          minLength: 1
+          maxLength: 120
+    Application:
+      allOf:
+        - $ref: '#/components/schemas/ApplicationInput'
+        - type: object
+          required: [id, status, ownerId, createdAt, updatedAt]
+          properties:
+            id:
+              $ref: '#/components/schemas/Uuid'
+            status:
+              $ref: '#/components/schemas/ApplicationStatus'
+            ownerId:
+              $ref: '#/components/schemas/Uuid'
+            rulesetId:
+              type: string
+              format: uuid
+              nullable: true
+            retentionScheduledFor:
+              type: string
+              format: date-time
+              nullable: true
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+    ApplicationPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        nextCursor:
+          type: string
+          nullable: true
+    FamilyMemberInput:
+      type: object
+      additionalProperties: false
+      required: [displayName, dateOfBirth, relationship]
+      properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 120
+        dateOfBirth:
+          type: string
+          format: date
+        relationship:
+          type: string
+          enum: [spouse, child, parent, other]
+    FamilyMemberPatch:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 120
+        dateOfBirth:
+          type: string
+          format: date
+        relationship:
+          type: string
+          enum: [spouse, child, parent, other]
+    FamilyMember:
+      allOf:
+        - $ref: '#/components/schemas/FamilyMemberInput'
+        - type: object
+          required: [id, createdAt, updatedAt]
+          properties:
+            id:
+              $ref: '#/components/schemas/Uuid'
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+    FamilyMemberList:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FamilyMember'
+    ChecklistItemStatus:
+      type: string
+      enum: [todo, in_progress, done, not_applicable]
+    ChecklistItem:
+      type: object
+      required: [id, title, scope, status, ruleId, sourceId]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        title:
+          type: string
+        description:
+          type: string
+        scope:
+          type: string
+          enum: [application, applicant, family_member]
+        memberId:
+          type: string
+          format: uuid
+          nullable: true
+        status:
+          $ref: '#/components/schemas/ChecklistItemStatus'
+        ruleId:
+          $ref: '#/components/schemas/Uuid'
+        sourceId:
+          $ref: '#/components/schemas/Uuid'
+    ChecklistProgress:
+      type: object
+      required: [completed, total, percent]
+      properties:
+        completed:
+          type: integer
+          minimum: 0
+        total:
+          type: integer
+          minimum: 0
+        percent:
+          type: number
+          minimum: 0
+          maximum: 100
+    UpdateChecklistItemInput:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          $ref: '#/components/schemas/ChecklistItemStatus'
+    UpdateChecklistItemResult:
+      type: object
+      required: [item, progress]
+      properties:
+        item:
+          $ref: '#/components/schemas/ChecklistItem'
+        progress:
+          $ref: '#/components/schemas/ChecklistProgress'
+    Checklist:
+      type: object
+      required: [applicationId, rulesetId, generatedAt, progress, items]
+      properties:
+        applicationId:
+          $ref: '#/components/schemas/Uuid'
+        rulesetId:
+          $ref: '#/components/schemas/Uuid'
+        generatedAt:
+          type: string
+          format: date-time
+        progress:
+          $ref: '#/components/schemas/ChecklistProgress'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChecklistItem'
+    Deadline:
+      type: object
+      required: [id, title, dueOn, critical, ruleId]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        title:
+          type: string
+        dueOn:
+          type: string
+          format: date
+        critical:
+          type: boolean
+        ruleId:
+          $ref: '#/components/schemas/Uuid'
+    DeadlineList:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deadline'
+    DocumentStatus:
+      type: string
+      enum: [awaiting_upload, queued, validating, rejected, ocr_processing, awaiting_confirmation, checking, ready, failed, deletion_pending, deleted]
+    DocumentUploadInput:
+      type: object
+      additionalProperties: false
+      required: [checklistItemId, contentType, sizeBytes]
+      properties:
+        checklistItemId:
+          $ref: '#/components/schemas/Uuid'
+        memberId:
+          type: string
+          format: uuid
+          nullable: true
+        contentType:
+          type: string
+          enum: [application/pdf, image/jpeg, image/png]
+        sizeBytes:
+          type: integer
+          minimum: 1
+          maximum: 20971520
+    CompleteDocumentUploadInput:
+      type: object
+      additionalProperties: false
+      required: [uploadToken]
+      properties:
+        uploadToken:
+          type: string
+    DocumentUploadRequest:
+      type: object
+      required: [document, uploadUrl, uploadMethod, uploadHeaders, uploadToken, expiresAt]
+      properties:
+        document:
+          $ref: '#/components/schemas/Document'
+        uploadUrl:
+          type: string
+          format: uri
+        uploadMethod:
+          type: string
+          enum: [PUT]
+        uploadHeaders:
+          type: object
+          additionalProperties:
+            type: string
+        uploadToken:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+    Document:
+      type: object
+      required: [id, applicationId, checklistItemId, contentType, sizeBytes, status, createdAt, updatedAt]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        applicationId:
+          $ref: '#/components/schemas/Uuid'
+        checklistItemId:
+          $ref: '#/components/schemas/Uuid'
+        memberId:
+          type: string
+          format: uuid
+          nullable: true
+        contentType:
+          type: string
+        sizeBytes:
+          type: integer
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        rejectionCode:
+          type: string
+          nullable: true
+          enum: [unsupported_type, size_exceeded, malware_detected, unreadable]
+        failureCode:
+          type: string
+          nullable: true
+        ocrEngineVersion:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    DocumentList:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    ExtractedField:
+      type: object
+      required: [key, value, confidence, confirmed]
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+        value:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        confirmed:
+          type: boolean
+    ExtractedFields:
+      type: object
+      required: [documentId, ocrEngineVersion, fields]
+      properties:
+        documentId:
+          $ref: '#/components/schemas/Uuid'
+        ocrEngineVersion:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractedField'
+    ConfirmExtractedFieldsInput:
+      type: object
+      additionalProperties: false
+      required: [fields]
+      properties:
+        fields:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            additionalProperties: false
+            required: [key, value]
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+    CheckLevel:
+      type: string
+      enum: [critical, warning, passed, not_checked]
+    DocumentCheck:
+      type: object
+      required: [id, level, explanation, ruleId, sourceId]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        level:
+          $ref: '#/components/schemas/CheckLevel'
+        explanation:
+          type: string
+        ruleId:
+          $ref: '#/components/schemas/Uuid'
+        sourceId:
+          $ref: '#/components/schemas/Uuid'
+    DocumentChecks:
+      type: object
+      required: [status, disclaimer, items]
+      properties:
+        status:
+          type: string
+          enum: [pending, completed, failed]
+        disclaimer:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentCheck'
+    AppointmentOptions:
+      type: object
+      required: [country, officialUrl, verifiedAt, capabilities, monitoring]
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        officialUrl:
+          type: string
+          format: uri
+        verifiedAt:
+          type: string
+          format: date-time
+        capabilities:
+          type: array
+          items:
+            type: string
+            enum: [official_link, slot_monitoring, unsupported]
+        monitoring:
+          $ref: '#/components/schemas/AppointmentMonitoring'
+    AppointmentMonitoring:
+      type: object
+      required: [available, enabled]
+      properties:
+        available:
+          type: boolean
+        enabled:
+          type: boolean
+        unavailableReason:
+          type: string
+          nullable: true
+          enum: [country_unsupported, feature_disabled, adapter_unhealthy]
+    SetAppointmentMonitoringInput:
+      type: object
+      additionalProperties: false
+      required: [enabled]
+      properties:
+        enabled:
+          type: boolean
+    CreateOrderInput:
+      type: object
+      additionalProperties: false
+      required: [plan]
+      properties:
+        plan:
+          type: string
+          enum: [pilot]
+    Order:
+      type: object
+      required: [id, plan, provider, status, createdAt, updatedAt]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        plan:
+          type: string
+          enum: [pilot]
+        provider:
+          type: string
+          enum: [test]
+        status:
+          type: string
+          enum: [pending_test_confirmation, paid_test]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RulesetStatus:
+      type: string
+      enum: [draft, review, published]
+    Rule:
+      type: object
+      additionalProperties: false
+      required: [id, sourceId, sourceVerifiedAt, conditions, actionType, action]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        sourceId:
+          $ref: '#/components/schemas/Uuid'
+        sourceVerifiedAt:
+          type: string
+          format: date-time
+        conditions:
+          type: object
+          additionalProperties: true
+        actionType:
+          type: string
+          enum: [require_document, require_action, calculate_deadline, validate_field]
+        action:
+          type: object
+          additionalProperties: true
+    CreateRulesetInput:
+      type: object
+      additionalProperties: false
+      required: [country, version]
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        version:
+          type: string
+          pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
+        basedOnRulesetId:
+          type: string
+          format: uuid
+          nullable: true
+    ReplaceRulesetInput:
+      type: object
+      additionalProperties: false
+      required: [rules]
+      properties:
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Rule'
+    RulesetSummary:
+      type: object
+      required: [id, country, version, status, createdAt]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        country:
+          $ref: '#/components/schemas/Country'
+        version:
+          type: string
+        status:
+          $ref: '#/components/schemas/RulesetStatus'
+        createdAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+    RulesetList:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RulesetSummary'
+    SourceDiff:
+      type: object
+      required: [sourceId, previousChecksum, currentChecksum, summary]
+      properties:
+        sourceId:
+          $ref: '#/components/schemas/Uuid'
+        previousChecksum:
+          type: string
+          nullable: true
+        currentChecksum:
+          type: string
+        summary:
+          type: string
+    Ruleset:
+      allOf:
+        - $ref: '#/components/schemas/RulesetSummary'
+        - type: object
+          required: [rules, sourceDiffs]
+          properties:
+            rules:
+              type: array
+              items:
+                $ref: '#/components/schemas/Rule'
+            sourceDiffs:
+              type: array
+              items:
+                $ref: '#/components/schemas/SourceDiff'
+    AsyncOperation:
+      type: object
+      required: [id, kind, status, createdAt]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        kind:
+          type: string
+        status:
+          type: string
+          enum: [queued, running, completed, failed]
+        createdAt:
+          type: string
+          format: date-time
+    ComponentHealth:
+      type: object
+      required: [id, kind, enabled, status, checkedAt]
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+          enum: [worker, adapter]
+        enabled:
+          type: boolean
+        status:
+          type: string
+          enum: [healthy, degraded, circuit_open, disabled, unknown]
+        errorClass:
+          type: string
+          nullable: true
+        checkedAt:
+          type: string
+          format: date-time
+        lastSucceededAt:
+          type: string
+          format: date-time
+          nullable: true
+    ComponentHealthList:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComponentHealth'
+    UpdateAdapterInput:
+      type: object
+      additionalProperties: false
+      required: [enabled]
+      properties:
+        enabled:
+          type: boolean
+    AuditEvent:
+      type: object
+      required: [id, actorId, action, targetType, targetId, occurredAt, requestId]
+      properties:
+        id:
+          $ref: '#/components/schemas/Uuid'
+        actorId:
+          $ref: '#/components/schemas/Uuid'
+        action:
+          type: string
+        targetType:
+          type: string
+        targetId:
+          type: string
+        occurredAt:
+          type: string
+          format: date-time
+        requestId:
+          type: string
+    AuditEventPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEvent'
+        nextCursor:
+          type: string
+          nullable: true
+    Problem:
+      type: object
+      required: [type, title, status, code, requestId]
+      properties:
+        type:
+          type: string
+          format: uri-reference
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        detail:
+          type: string
+        code:
+          type: string
+        requestId:
+          type: string
+    FieldViolation:
+      type: object
+      required: [field, code, message]
+      properties:
+        field:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+    ValidationProblem:
+      allOf:
+        - $ref: '#/components/schemas/Problem'
+        - type: object
+          required: [violations]
+          properties:
+            violations:
+              type: array
+              items:
+                $ref: '#/components/schemas/FieldViolation'
