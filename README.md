@@ -10,6 +10,7 @@ VisaFlow — Telegram Mini App для самостоятельной подго�
 - [SRS](docs/SRS.md) — функциональные и нефункциональные требования.
 - [Архитектура](docs/architecture.md) — общая архитектурная идея, потоки и отложенные решения.
 - [Engineering Guidelines](docs/engineering-guidelines.md) — выбранный дизайн системы, code style и критерии качества.
+- [OpenAPI](api/openapi.yaml) — версионированный контракт HTTP API между клиентами и Go core.
 - [User stories](docs/user-stories.md) — пользовательские истории и критерии приемки.
 - [Матрица трассировки](docs/traceability-matrix.md) — связь целей, требований, историй и тестов.
 
