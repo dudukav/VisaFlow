@@ -4,6 +4,6 @@ generate:
   chi-server: true
   strict-server: true
   embedded-spec: true
-output: backend/core/internal/transport/http/generated/openapi.gen.go
+output: internal/transport/http/generated/openapi.gen.go
 output-options:
   skip-prune: true
