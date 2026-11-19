@@ -1,0 +1,4664 @@
+{
+  "created_at_utc": "2026-11-19T13:32:51+00:00",
+  "manifest": "cases/manifest.json",
+  "tools": {
+    "pypdf": "6.21.4",
+    "tesseract": "tesseract 5.5.4",
+    "pdftoppm": "pdftoppm version 26.11.0"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "system": "Darwin",
+    "os_version": "26.6.2",
+    "architecture": "arm64",
+    "logical_cpus": 8
+  },
+  "settings": {
+    "runs_per_pdf_per_method": 3,
+    "warmup_runs": 0,
+    "page": 1,
+    "ocr": {
+      "dpi": 300,
+      "language": "eng",
+      "oem": 1,
+      "psm": 6,
+      "render_timeout_seconds": 20,
+      "ocr_timeout_seconds": 30
+    },
+    "high_confidence_threshold": 0.85,
+    "quality_basis": "First completed run per PDF; first attempt represents a PDF if all attempts failed.",
+    "confidence": "Minimum value-token Tesseract confidence divided by 100; null for pypdf.",
+    "normalization": "Collapse whitespace; case and lookalike characters are preserved in values.",
+    "latency": "Extraction through normalized fields, including rendering and subprocess/temporary I/O for OCR. Percentiles use linear interpolation over completed runs."
+  },
+  "summary": {
+    "pypdf": {
+      "overall": {
+        "pdfs": 20,
+        "perfect_pdfs": 4,
+        "unstable_pdfs": 0,
+        "document_statuses": {
+          "ok": 4,
+          "no_text_layer": 16
+        },
+        "run_statuses": {
+          "ok": 12,
+          "no_text_layer": 48
+        },
+        "latency_ms": {
+          "samples": 60,
+          "p50": 0.882,
+          "p95": 2.514
+        },
+        "fields": {
+          "surname": {
+            "expected": 20,
+            "exact": 4,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.2,
+            "high_confidence_errors": 0
+          },
+          "givenName": {
+            "expected": 20,
+            "exact": 4,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.2,
+            "high_confidence_errors": 0
+          },
+          "documentNumber": {
+            "expected": 20,
+            "exact": 4,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.2,
+            "high_confidence_errors": 0
+          },
+          "expiresOn": {
+            "expected": 20,
+            "exact": 4,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.2,
+            "high_confidence_errors": 0
+          }
+        }
+      },
+      "scans_only": {
+        "pdfs": 16,
+        "perfect_pdfs": 0,
+        "unstable_pdfs": 0,
+        "document_statuses": {
+          "no_text_layer": 16
+        },
+        "run_statuses": {
+          "no_text_layer": 48
+        },
+        "latency_ms": {
+          "samples": 48,
+          "p50": 0.728,
+          "p95": 2.496
+        },
+        "fields": {
+          "surname": {
+            "expected": 16,
+            "exact": 0,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.0,
+            "high_confidence_errors": 0
+          },
+          "givenName": {
+            "expected": 16,
+            "exact": 0,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.0,
+            "high_confidence_errors": 0
+          },
+          "documentNumber": {
+            "expected": 16,
+            "exact": 0,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.0,
+            "high_confidence_errors": 0
+          },
+          "expiresOn": {
+            "expected": 16,
+            "exact": 0,
+            "missing": 16,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 0.0,
+            "high_confidence_errors": 0
+          }
+        }
+      },
+      "by_variant": {
+        "text_layer": {
+          "pdfs": 4,
+          "perfect_pdfs": 4,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 1.107,
+            "p95": 2.456
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_300dpi": {
+          "pdfs": 4,
+          "perfect_pdfs": 0,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "no_text_layer": 4
+          },
+          "run_statuses": {
+            "no_text_layer": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 0.747,
+            "p95": 2.01
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_150dpi": {
+          "pdfs": 4,
+          "perfect_pdfs": 0,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "no_text_layer": 4
+          },
+          "run_statuses": {
+            "no_text_layer": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 0.728,
+            "p95": 2.775
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_rotated": {
+          "pdfs": 4,
+          "perfect_pdfs": 0,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "no_text_layer": 4
+          },
+          "run_statuses": {
+            "no_text_layer": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 0.727,
+            "p95": 2.713
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_low_contrast": {
+          "pdfs": 4,
+          "perfect_pdfs": 0,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "no_text_layer": 4
+          },
+          "run_statuses": {
+            "no_text_layer": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 0.663,
+            "p95": 2.333
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 0,
+              "missing": 4,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 0.0,
+              "high_confidence_errors": 0
+            }
+          }
+        }
+      }
+    },
+    "tesseract": {
+      "overall": {
+        "pdfs": 20,
+        "perfect_pdfs": 10,
+        "unstable_pdfs": 0,
+        "document_statuses": {
+          "ok": 20
+        },
+        "run_statuses": {
+          "ok": 60
+        },
+        "latency_ms": {
+          "samples": 60,
+          "p50": 542.36,
+          "p95": 652.777
+        },
+        "fields": {
+          "surname": {
+            "expected": 20,
+            "exact": 20,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 1.0,
+            "high_confidence_errors": 0
+          },
+          "givenName": {
+            "expected": 20,
+            "exact": 15,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 5,
+            "accuracy": 0.75,
+            "high_confidence_errors": 5
+          },
+          "documentNumber": {
+            "expected": 20,
+            "exact": 10,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 10,
+            "accuracy": 0.5,
+            "high_confidence_errors": 0
+          },
+          "expiresOn": {
+            "expected": 20,
+            "exact": 20,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 1.0,
+            "high_confidence_errors": 0
+          }
+        }
+      },
+      "scans_only": {
+        "pdfs": 16,
+        "perfect_pdfs": 8,
+        "unstable_pdfs": 0,
+        "document_statuses": {
+          "ok": 16
+        },
+        "run_statuses": {
+          "ok": 48
+        },
+        "latency_ms": {
+          "samples": 48,
+          "p50": 552.544,
+          "p95": 678.586
+        },
+        "fields": {
+          "surname": {
+            "expected": 16,
+            "exact": 16,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 1.0,
+            "high_confidence_errors": 0
+          },
+          "givenName": {
+            "expected": 16,
+            "exact": 12,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 4,
+            "accuracy": 0.75,
+            "high_confidence_errors": 4
+          },
+          "documentNumber": {
+            "expected": 16,
+            "exact": 8,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 8,
+            "accuracy": 0.5,
+            "high_confidence_errors": 0
+          },
+          "expiresOn": {
+            "expected": 16,
+            "exact": 16,
+            "missing": 0,
+            "invalid_format": 0,
+            "mismatch": 0,
+            "accuracy": 1.0,
+            "high_confidence_errors": 0
+          }
+        }
+      },
+      "by_variant": {
+        "text_layer": {
+          "pdfs": 4,
+          "perfect_pdfs": 2,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 473.808,
+            "p95": 521.811
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 3,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 1,
+              "accuracy": 0.75,
+              "high_confidence_errors": 1
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 2,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 2,
+              "accuracy": 0.5,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_300dpi": {
+          "pdfs": 4,
+          "perfect_pdfs": 2,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 555.698,
+            "p95": 678.949
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 3,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 1,
+              "accuracy": 0.75,
+              "high_confidence_errors": 1
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 2,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 2,
+              "accuracy": 0.5,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_150dpi": {
+          "pdfs": 4,
+          "perfect_pdfs": 2,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 505.057,
+            "p95": 572.582
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 3,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 1,
+              "accuracy": 0.75,
+              "high_confidence_errors": 1
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 2,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 2,
+              "accuracy": 0.5,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_rotated": {
+          "pdfs": 4,
+          "perfect_pdfs": 2,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 638.131,
+            "p95": 721.835
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 3,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 1,
+              "accuracy": 0.75,
+              "high_confidence_errors": 1
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 2,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 2,
+              "accuracy": 0.5,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        },
+        "scan_low_contrast": {
+          "pdfs": 4,
+          "perfect_pdfs": 2,
+          "unstable_pdfs": 0,
+          "document_statuses": {
+            "ok": 4
+          },
+          "run_statuses": {
+            "ok": 12
+          },
+          "latency_ms": {
+            "samples": 12,
+            "p50": 542.477,
+            "p95": 556.209
+          },
+          "fields": {
+            "surname": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            },
+            "givenName": {
+              "expected": 4,
+              "exact": 3,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 1,
+              "accuracy": 0.75,
+              "high_confidence_errors": 1
+            },
+            "documentNumber": {
+              "expected": 4,
+              "exact": 2,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 2,
+              "accuracy": 0.5,
+              "high_confidence_errors": 0
+            },
+            "expiresOn": {
+              "expected": 4,
+              "exact": 4,
+              "missing": 0,
+              "invalid_format": 0,
+              "mismatch": 0,
+              "accuracy": 1.0,
+              "high_confidence_errors": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "baseline__text_layer",
+      "variant": "text_layer",
+      "pdf": "baseline__text_layer.pdf",
+      "expected": {
+        "surname": "SYNTHETIC",
+        "givenName": "TEST",
+        "documentNumber": "SYNTH-0001",
+        "expiresOn": "2032-12-31"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 2.217,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.196,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.087,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 543.647,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 489.407,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 466.968,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "baseline__scan_300dpi",
+      "variant": "scan_300dpi",
+      "pdf": "baseline__scan_300dpi.pdf",
+      "expected": {
+        "surname": "SYNTHETIC",
+        "givenName": "TEST",
+        "documentNumber": "SYNTH-0001",
+        "expiresOn": "2032-12-31"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.899,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.743,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.62,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 556.492,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 730.707,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 554.905,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96350815,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9583744799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91135834,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9535601,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "baseline__scan_150dpi",
+      "variant": "scan_150dpi",
+      "pdf": "baseline__scan_150dpi.pdf",
+      "expected": {
+        "surname": "SYNTHETIC",
+        "givenName": "TEST",
+        "documentNumber": "SYNTH-0001",
+        "expiresOn": "2032-12-31"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 3.393,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.139,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.739,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 504.222,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.9577126300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.96669197,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87452934,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.96024818,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 642.397,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.9577126300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.96669197,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87452934,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.96024818,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 515.46,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.9577126300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.96669197,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87452934,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.96024818,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "baseline__scan_rotated",
+      "variant": "scan_rotated",
+      "pdf": "baseline__scan_rotated.pdf",
+      "expected": {
+        "surname": "SYNTHETIC",
+        "givenName": "TEST",
+        "documentNumber": "SYNTH-0001",
+        "expiresOn": "2032-12-31"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.511,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.682,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.593,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 650.626,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.95902794,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9624559,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87320206,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.88412621,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 693.642,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.95902794,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9624559,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87320206,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.88412621,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 648.756,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.95902794,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.9624559,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.87320206,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.88412621,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "baseline__scan_low_contrast",
+      "variant": "scan_low_contrast",
+      "pdf": "baseline__scan_low_contrast.pdf",
+      "expected": {
+        "surname": "SYNTHETIC",
+        "givenName": "TEST",
+        "documentNumber": "SYNTH-0001",
+        "expiresOn": "2032-12-31"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.341,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.662,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.576,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 530.701,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96373344,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.95726395,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91177788,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9512035400000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 541.072,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96373344,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.95726395,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91177788,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9512035400000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 534.577,
+              "fields": {
+                "surname": {
+                  "value": "SYNTHETIC",
+                  "confidence": 0.96373344,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "TEST",
+                  "confidence": 0.95726395,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-0001",
+                  "confidence": 0.91177788,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2032-12-31",
+                  "confidence": 0.9512035400000001,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short-name__text_layer",
+      "variant": "text_layer",
+      "pdf": "short-name__text_layer.pdf",
+      "expected": {
+        "surname": "SAMPLE",
+        "givenName": "AI",
+        "documentNumber": "SYNTH-O01I",
+        "expiresOn": "2030-02-28"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 2.36,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "AI",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01I",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.122,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "AI",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01I",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.001,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "AI",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01I",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 468.257,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 450.118,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 450.31,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short-name__scan_300dpi",
+      "variant": "scan_300dpi",
+      "pdf": "short-name__scan_300dpi.pdf",
+      "expected": {
+        "surname": "SAMPLE",
+        "givenName": "AI",
+        "documentNumber": "SYNTH-O01I",
+        "expiresOn": "2030-02-28"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.576,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.751,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.56,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 534.629,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 530.376,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 571.025,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96496933,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.94785561,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6936928600000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96271294,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short-name__scan_150dpi",
+      "variant": "scan_150dpi",
+      "pdf": "short-name__scan_150dpi.pdf",
+      "expected": {
+        "surname": "SAMPLE",
+        "givenName": "AI",
+        "documentNumber": "SYNTH-O01I",
+        "expiresOn": "2030-02-28"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.582,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.624,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.634,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 486.153,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96727249,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9701429699999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.5569073499999999,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9569206200000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 488.776,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96727249,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9701429699999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.5569073499999999,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9569206200000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 498.873,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.96727249,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9701429699999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.5569073499999999,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9569206200000001,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short-name__scan_rotated",
+      "variant": "scan_rotated",
+      "pdf": "short-name__scan_rotated.pdf",
+      "expected": {
+        "surname": "SAMPLE",
+        "givenName": "AI",
+        "documentNumber": "SYNTH-O01I",
+        "expiresOn": "2030-02-28"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.961,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.771,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.653,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 619.688,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.95964729,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9595738199999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01|",
+                  "confidence": 0.45000895999999996,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9525499700000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 756.292,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.95964729,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9595738199999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01|",
+                  "confidence": 0.45000895999999996,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9525499700000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 614.822,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.95964729,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.9595738199999999,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O01|",
+                  "confidence": 0.45000895999999996,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.9525499700000001,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short-name__scan_low_contrast",
+      "variant": "scan_low_contrast",
+      "pdf": "short-name__scan_low_contrast.pdf",
+      "expected": {
+        "surname": "SAMPLE",
+        "givenName": "AI",
+        "documentNumber": "SYNTH-O01I",
+        "expiresOn": "2030-02-28"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.65,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.65,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.57,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 531.945,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.9635039500000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.95809708,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6716256,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96123756,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 533.569,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.9635039500000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.95809708,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6716256,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96123756,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 535.929,
+              "fields": {
+                "surname": {
+                  "value": "SAMPLE",
+                  "confidence": 0.9635039500000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "Al",
+                  "confidence": 0.95809708,
+                  "status": "mismatch"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-O011",
+                  "confidence": 0.6716256,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2030-02-28",
+                  "confidence": 0.96123756,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long-name__text_layer",
+      "variant": "text_layer",
+      "pdf": "long-name__text_layer.pdf",
+      "expected": {
+        "surname": "ILLUSTRATIVE",
+        "givenName": "ALEXANDRIA-MARIE",
+        "documentNumber": "SYNTH-I10O",
+        "expiresOn": "2034-07-19"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 2.573,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I10O",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.019,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I10O",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 0.972,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I10O",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 474.179,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 474.451,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 478.628,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long-name__scan_300dpi",
+      "variant": "scan_300dpi",
+      "pdf": "long-name__scan_300dpi.pdf",
+      "expected": {
+        "surname": "ILLUSTRATIVE",
+        "givenName": "ALEXANDRIA-MARIE",
+        "documentNumber": "SYNTH-I10O",
+        "expiresOn": "2034-07-19"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.145,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.244,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.6,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 552.931,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 636.601,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 597.64,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9578716300000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.90499977,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.83022995,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9630297899999999,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long-name__scan_150dpi",
+      "variant": "scan_150dpi",
+      "pdf": "long-name__scan_150dpi.pdf",
+      "expected": {
+        "surname": "ILLUSTRATIVE",
+        "givenName": "ALEXANDRIA-MARIE",
+        "documentNumber": "SYNTH-I10O",
+        "expiresOn": "2034-07-19"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.773,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.717,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.659,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 511.779,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.95989952,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9175888799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-1100",
+                  "confidence": 0.10571289,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9646560700000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 515.369,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.95989952,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9175888799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-1100",
+                  "confidence": 0.10571289,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9646560700000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 507.326,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.95989952,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9175888799999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-1100",
+                  "confidence": 0.10571289,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.9646560700000001,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long-name__scan_rotated",
+      "variant": "scan_rotated",
+      "pdf": "long-name__scan_rotated.pdf",
+      "expected": {
+        "surname": "ILLUSTRATIVE",
+        "givenName": "ALEXANDRIA-MARIE",
+        "documentNumber": "SYNTH-I10O",
+        "expiresOn": "2034-07-19"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.468,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.792,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.597,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 638.364,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.84828003,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9267120400000001,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.59250103,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.93295898,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 636.494,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.84828003,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9267120400000001,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.59250103,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.93295898,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 644.445,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.84828003,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9267120400000001,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.59250103,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.93295898,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long-name__scan_low_contrast",
+      "variant": "scan_low_contrast",
+      "pdf": "long-name__scan_low_contrast.pdf",
+      "expected": {
+        "surname": "ILLUSTRATIVE",
+        "givenName": "ALEXANDRIA-MARIE",
+        "documentNumber": "SYNTH-I10O",
+        "expiresOn": "2034-07-19"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.327,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.663,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.567,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 544.265,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9605551099999999,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9023287999999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.8065461700000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.96258804,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 545.089,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9605551099999999,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9023287999999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.8065461700000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.96258804,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 556.012,
+              "fields": {
+                "surname": {
+                  "value": "ILLUSTRATIVE",
+                  "confidence": 0.9605551099999999,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "ALEXANDRIA-MARIE",
+                  "confidence": 0.9023287999999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-I100",
+                  "confidence": 0.8065461700000001,
+                  "status": "mismatch"
+                },
+                "expiresOn": {
+                  "value": "2034-07-19",
+                  "confidence": 0.96258804,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "two-part-name__text_layer",
+      "variant": "text_layer",
+      "pdf": "two-part-name__text_layer.pdf",
+      "expected": {
+        "surname": "EXAMPLE-RECORD",
+        "givenName": "NOVA LEE",
+        "documentNumber": "SYNTH-4072",
+        "expiresOn": "2036-02-29"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.933,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.091,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 1.052,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": null,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": null,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 472.679,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 503.945,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 473.436,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "two-part-name__scan_300dpi",
+      "variant": "scan_300dpi",
+      "pdf": "two-part-name__scan_300dpi.pdf",
+      "expected": {
+        "surname": "EXAMPLE-RECORD",
+        "givenName": "NOVA LEE",
+        "documentNumber": "SYNTH-4072",
+        "expiresOn": "2036-02-29"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.649,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.62,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.629,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 558.679,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 554.527,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 552.157,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.9080060600000001,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.96608719,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.9042235599999999,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.95885071,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "two-part-name__scan_150dpi",
+      "variant": "scan_150dpi",
+      "pdf": "two-part-name__scan_150dpi.pdf",
+      "expected": {
+        "surname": "EXAMPLE-RECORD",
+        "givenName": "NOVA LEE",
+        "documentNumber": "SYNTH-4072",
+        "expiresOn": "2036-02-29"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.27,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.59,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.562,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 505.892,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.92573547,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.961735,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.92513481,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.96502869,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 504.205,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.92573547,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.961735,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.92513481,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.96502869,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 503.524,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.92573547,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.961735,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.92513481,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.96502869,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "two-part-name__scan_rotated",
+      "variant": "scan_rotated",
+      "pdf": "two-part-name__scan_rotated.pdf",
+      "expected": {
+        "surname": "EXAMPLE-RECORD",
+        "givenName": "NOVA LEE",
+        "documentNumber": "SYNTH-4072",
+        "expiresOn": "2036-02-29"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 2.312,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.631,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.57,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 629.598,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.91532631,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9428121899999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91395111,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.94750404,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 637.899,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.91532631,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9428121899999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91395111,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.94750404,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 633.684,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.91532631,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9428121899999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91395111,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.94750404,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "two-part-name__scan_low_contrast",
+      "variant": "scan_low_contrast",
+      "pdf": "two-part-name__scan_low_contrast.pdf",
+      "expected": {
+        "surname": "EXAMPLE-RECORD",
+        "givenName": "NOVA LEE",
+        "documentNumber": "SYNTH-4072",
+        "expiresOn": "2036-02-29"
+      },
+      "methods": {
+        "pypdf": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 1.773,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.786,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "no_text_layer",
+              "error_stage": null,
+              "elapsed_ms": 0.652,
+              "fields": {
+                "surname": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "givenName": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "documentNumber": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                },
+                "expiresOn": {
+                  "value": null,
+                  "confidence": null,
+                  "status": "missing"
+                }
+              }
+            }
+          ]
+        },
+        "tesseract": {
+          "quality_run": 1,
+          "stable_across_runs": true,
+          "runs": [
+            {
+              "run": 1,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 545.595,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.90908051,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9637844099999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91589287,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.9611127500000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 2,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 543.883,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.90908051,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9637844099999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91589287,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.9611127500000001,
+                  "status": "exact"
+                }
+              }
+            },
+            {
+              "run": 3,
+              "status": "ok",
+              "error_stage": null,
+              "elapsed_ms": 556.449,
+              "fields": {
+                "surname": {
+                  "value": "EXAMPLE-RECORD",
+                  "confidence": 0.90908051,
+                  "status": "exact"
+                },
+                "givenName": {
+                  "value": "NOVA LEE",
+                  "confidence": 0.9637844099999999,
+                  "status": "exact"
+                },
+                "documentNumber": {
+                  "value": "SYNTH-4072",
+                  "confidence": 0.91589287,
+                  "status": "exact"
+                },
+                "expiresOn": {
+                  "value": "2036-02-29",
+                  "confidence": 0.9611127500000001,
+                  "status": "exact"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
