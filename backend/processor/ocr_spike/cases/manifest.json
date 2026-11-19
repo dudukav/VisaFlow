@@ -1,0 +1,222 @@
+[
+  {
+    "id": "baseline__text_layer",
+    "variant": "text_layer",
+    "pdf": "baseline__text_layer.pdf",
+    "expected": {
+      "surname": "SYNTHETIC",
+      "givenName": "TEST",
+      "documentNumber": "SYNTH-0001",
+      "expiresOn": "2032-12-31"
+    }
+  },
+  {
+    "id": "baseline__scan_300dpi",
+    "variant": "scan_300dpi",
+    "pdf": "baseline__scan_300dpi.pdf",
+    "expected": {
+      "surname": "SYNTHETIC",
+      "givenName": "TEST",
+      "documentNumber": "SYNTH-0001",
+      "expiresOn": "2032-12-31"
+    }
+  },
+  {
+    "id": "baseline__scan_150dpi",
+    "variant": "scan_150dpi",
+    "pdf": "baseline__scan_150dpi.pdf",
+    "expected": {
+      "surname": "SYNTHETIC",
+      "givenName": "TEST",
+      "documentNumber": "SYNTH-0001",
+      "expiresOn": "2032-12-31"
+    }
+  },
+  {
+    "id": "baseline__scan_rotated",
+    "variant": "scan_rotated",
+    "pdf": "baseline__scan_rotated.pdf",
+    "expected": {
+      "surname": "SYNTHETIC",
+      "givenName": "TEST",
+      "documentNumber": "SYNTH-0001",
+      "expiresOn": "2032-12-31"
+    }
+  },
+  {
+    "id": "baseline__scan_low_contrast",
+    "variant": "scan_low_contrast",
+    "pdf": "baseline__scan_low_contrast.pdf",
+    "expected": {
+      "surname": "SYNTHETIC",
+      "givenName": "TEST",
+      "documentNumber": "SYNTH-0001",
+      "expiresOn": "2032-12-31"
+    }
+  },
+  {
+    "id": "short-name__text_layer",
+    "variant": "text_layer",
+    "pdf": "short-name__text_layer.pdf",
+    "expected": {
+      "surname": "SAMPLE",
+      "givenName": "AI",
+      "documentNumber": "SYNTH-O01I",
+      "expiresOn": "2030-02-28"
+    }
+  },
+  {
+    "id": "short-name__scan_300dpi",
+    "variant": "scan_300dpi",
+    "pdf": "short-name__scan_300dpi.pdf",
+    "expected": {
+      "surname": "SAMPLE",
+      "givenName": "AI",
+      "documentNumber": "SYNTH-O01I",
+      "expiresOn": "2030-02-28"
+    }
+  },
+  {
+    "id": "short-name__scan_150dpi",
+    "variant": "scan_150dpi",
+    "pdf": "short-name__scan_150dpi.pdf",
+    "expected": {
+      "surname": "SAMPLE",
+      "givenName": "AI",
+      "documentNumber": "SYNTH-O01I",
+      "expiresOn": "2030-02-28"
+    }
+  },
+  {
+    "id": "short-name__scan_rotated",
+    "variant": "scan_rotated",
+    "pdf": "short-name__scan_rotated.pdf",
+    "expected": {
+      "surname": "SAMPLE",
+      "givenName": "AI",
+      "documentNumber": "SYNTH-O01I",
+      "expiresOn": "2030-02-28"
+    }
+  },
+  {
+    "id": "short-name__scan_low_contrast",
+    "variant": "scan_low_contrast",
+    "pdf": "short-name__scan_low_contrast.pdf",
+    "expected": {
+      "surname": "SAMPLE",
+      "givenName": "AI",
+      "documentNumber": "SYNTH-O01I",
+      "expiresOn": "2030-02-28"
+    }
+  },
+  {
+    "id": "long-name__text_layer",
+    "variant": "text_layer",
+    "pdf": "long-name__text_layer.pdf",
+    "expected": {
+      "surname": "ILLUSTRATIVE",
+      "givenName": "ALEXANDRIA-MARIE",
+      "documentNumber": "SYNTH-I10O",
+      "expiresOn": "2034-07-19"
+    }
+  },
+  {
+    "id": "long-name__scan_300dpi",
+    "variant": "scan_300dpi",
+    "pdf": "long-name__scan_300dpi.pdf",
+    "expected": {
+      "surname": "ILLUSTRATIVE",
+      "givenName": "ALEXANDRIA-MARIE",
+      "documentNumber": "SYNTH-I10O",
+      "expiresOn": "2034-07-19"
+    }
+  },
+  {
+    "id": "long-name__scan_150dpi",
+    "variant": "scan_150dpi",
+    "pdf": "long-name__scan_150dpi.pdf",
+    "expected": {
+      "surname": "ILLUSTRATIVE",
+      "givenName": "ALEXANDRIA-MARIE",
+      "documentNumber": "SYNTH-I10O",
+      "expiresOn": "2034-07-19"
+    }
+  },
+  {
+    "id": "long-name__scan_rotated",
+    "variant": "scan_rotated",
+    "pdf": "long-name__scan_rotated.pdf",
+    "expected": {
+      "surname": "ILLUSTRATIVE",
+      "givenName": "ALEXANDRIA-MARIE",
+      "documentNumber": "SYNTH-I10O",
+      "expiresOn": "2034-07-19"
+    }
+  },
+  {
+    "id": "long-name__scan_low_contrast",
+    "variant": "scan_low_contrast",
+    "pdf": "long-name__scan_low_contrast.pdf",
+    "expected": {
+      "surname": "ILLUSTRATIVE",
+      "givenName": "ALEXANDRIA-MARIE",
+      "documentNumber": "SYNTH-I10O",
+      "expiresOn": "2034-07-19"
+    }
+  },
+  {
+    "id": "two-part-name__text_layer",
+    "variant": "text_layer",
+    "pdf": "two-part-name__text_layer.pdf",
+    "expected": {
+      "surname": "EXAMPLE-RECORD",
+      "givenName": "NOVA LEE",
+      "documentNumber": "SYNTH-4072",
+      "expiresOn": "2036-02-29"
+    }
+  },
+  {
+    "id": "two-part-name__scan_300dpi",
+    "variant": "scan_300dpi",
+    "pdf": "two-part-name__scan_300dpi.pdf",
+    "expected": {
+      "surname": "EXAMPLE-RECORD",
+      "givenName": "NOVA LEE",
+      "documentNumber": "SYNTH-4072",
+      "expiresOn": "2036-02-29"
+    }
+  },
+  {
+    "id": "two-part-name__scan_150dpi",
+    "variant": "scan_150dpi",
+    "pdf": "two-part-name__scan_150dpi.pdf",
+    "expected": {
+      "surname": "EXAMPLE-RECORD",
+      "givenName": "NOVA LEE",
+      "documentNumber": "SYNTH-4072",
+      "expiresOn": "2036-02-29"
+    }
+  },
+  {
+    "id": "two-part-name__scan_rotated",
+    "variant": "scan_rotated",
+    "pdf": "two-part-name__scan_rotated.pdf",
+    "expected": {
+      "surname": "EXAMPLE-RECORD",
+      "givenName": "NOVA LEE",
+      "documentNumber": "SYNTH-4072",
+      "expiresOn": "2036-02-29"
+    }
+  },
+  {
+    "id": "two-part-name__scan_low_contrast",
+    "variant": "scan_low_contrast",
+    "pdf": "two-part-name__scan_low_contrast.pdf",
+    "expected": {
+      "surname": "EXAMPLE-RECORD",
+      "givenName": "NOVA LEE",
+      "documentNumber": "SYNTH-4072",
+      "expiresOn": "2036-02-29"
+    }
+  }
+]
