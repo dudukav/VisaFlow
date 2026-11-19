@@ -1,0 +1,58 @@
+{
+  "definitions": {
+    "AuthSession": {
+      "type": "object",
+      "required": [
+        "accessToken",
+        "expiresAt",
+        "user"
+      ],
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user": {
+          "$ref": "#/definitions/UserProfile"
+        }
+      }
+    },
+    "UserProfile": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "telegramDisplayName",
+        "hasCurrentConsent"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "role": {
+          "$ref": "#/definitions/UserRole"
+        },
+        "telegramDisplayName": {
+          "type": "string"
+        },
+        "hasCurrentConsent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UserRole": {
+      "type": "string",
+      "enum": [
+        "applicant",
+        "administrator"
+      ]
+    },
+    "Uuid": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}
