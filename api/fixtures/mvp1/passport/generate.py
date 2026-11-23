@@ -12,6 +12,12 @@ FIELDS = {
     "documentNumber": "SYNTH-0001",
     "expiresOn": "2032-12-31",
 }
+FIELD_LABELS = {
+    "surname": "Surname",
+    "givenName": "Given name",
+    "documentNumber": "Document number",
+    "expiresOn": "Expiry date",
+}
 
 
 def write_json(filename: str, data: object) -> None:
@@ -43,19 +49,40 @@ def main() -> None:
     write_json("expected-fields.json", FIELDS)
     write_example("extracted-fields", "Synthetic passport before confirmation", {
         "documentId": DOCUMENT_ID,
-        "ocrEngineVersion": "fixture-ocr/1",
+        "revision": 1,
+        "ocrOutcome": "succeeded",
         "fields": [
-            {"key": key, "value": value, "confidence": 0.99, "confirmed": False}
+            {
+                "key": key,
+                "label": FIELD_LABELS[key],
+                "value": value,
+                "source": "ocr",
+                "confidence": 0.99,
+            }
             for key, value in FIELDS.items()
         ],
+        "savedAt": "2026-01-01T00:00:00Z",
+        "confirmedAt": None,
     })
     write_example("checks", "Synthetic check after confirmation", {
         "status": "completed",
+        "stale": False,
         "disclaimer": "Synthetic fixture for automated testing.",
+        "summary": {
+            "critical": 0,
+            "warning": 0,
+            "passed": 1,
+            "notChecked": 0,
+        },
         "items": [{
             "id": "22222222-2222-4222-8222-222222222222",
+            "code": "DOCUMENT_NUMBER_PRESENT",
+            "title": "Document number is present",
             "level": "passed",
             "explanation": "The synthetic document number is present.",
+            "scope": "document",
+            "documentIds": [DOCUMENT_ID],
+            "fieldKeys": ["documentNumber"],
             "ruleId": "33333333-3333-4333-8333-333333333333",
             "sourceId": "44444444-4444-4444-8444-444444444444",
         }],
