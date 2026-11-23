@@ -13,7 +13,6 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Exchange verified Telegram Mini App init data for a session */
         post: operations["authenticateWithTelegram"];
         delete?: never;
         options?: never;
@@ -31,7 +30,6 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Revoke the current session */
         delete: operations["endSession"];
         options?: never;
         head?: never;
@@ -45,7 +43,6 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Return the current user and active consent state */
         get: operations["getCurrentUser"];
         put?: never;
         post?: never;
@@ -62,7 +59,6 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Return the currently required document-processing consent */
         get: operations["getCurrentConsent"];
         put?: never;
         post?: never;
@@ -80,7 +76,6 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** Accept the current consent version */
         put: operations["acceptCurrentConsent"];
         post?: never;
         delete?: never;
@@ -105,6 +100,22 @@ export interface paths {
         patch: operations["updateNotificationPreferences"];
         trace?: never;
     };
+    "/application-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApplicationOptions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/applications": {
         parameters: {
             query?: never;
@@ -112,7 +123,6 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List applications owned by the current user */
         get: operations["listApplications"];
         put?: never;
         post: operations["createApplication"];
@@ -134,9 +144,11 @@ export interface paths {
         get: operations["getApplication"];
         put?: never;
         post?: never;
-        delete?: never;
+        /** @description Only drafts can be deleted. Activated applications must be closed. */
+        delete: operations["deleteDraftApplication"];
         options?: never;
         head?: never;
+        /** @description Mutable data changes mark the checklist stale until explicit recalculation. */
         patch: operations["updateApplication"];
         trace?: never;
     };
@@ -149,11 +161,30 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** @description Final action; the consumed credit is not returned and personal document data is deleted after 30 days. */
         post: operations["closeApplication"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/applications/{applicationId}/applicant": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+            };
+            cookie?: never;
+        };
+        get: operations["getApplicant"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["updateApplicant"];
         trace?: never;
     };
     "/applications/{applicationId}/members": {
@@ -165,9 +196,9 @@ export interface paths {
             };
             cookie?: never;
         };
-        get: operations["listFamilyMembers"];
+        get: operations["listMembers"];
         put?: never;
-        post: operations["createFamilyMember"];
+        post: operations["createMember"];
         delete?: never;
         options?: never;
         head?: never;
@@ -187,25 +218,55 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete: operations["deleteFamilyMember"];
+        delete: operations["deleteMember"];
         options?: never;
         head?: never;
-        patch: operations["updateFamilyMember"];
+        patch: operations["updateMember"];
+        trace?: never;
+    };
+    "/applications/{applicationId}/members/{memberId}/invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Creates a single-use short-lived Telegram Mini App deep link. Username is display-only. */
+        post: operations["createMemberInvite"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/application-invites/{inviteToken}/acceptance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["acceptMemberInvite"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/applications/{applicationId}/checklist": {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                applicationId: components["parameters"]["ApplicationId"];
-            };
+            path?: never;
             cookie?: never;
         };
         get: operations["getChecklist"];
         put?: never;
-        /** Generate a checklist using the current published ruleset */
-        post: operations["generateChecklist"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -221,7 +282,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Explicitly rebuild a checklist using the latest published ruleset */
+        /** @description Applies current data and latest ruleset; matching completed items are retained. */
         post: operations["recalculateChecklist"];
         delete?: never;
         options?: never;
@@ -242,6 +303,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
+        /** @description Action items are manual; document item statuses are automatic. */
         patch: operations["updateChecklistItem"];
         trace?: never;
     };
@@ -286,7 +348,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create a single-object, time-limited upload URL */
+        /** @description Creates a signed upload URL for one multi-page PDF of at most 15 MiB. */
         post: operations["createDocumentUploadRequest"];
         delete?: never;
         options?: never;
@@ -303,7 +365,6 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Confirm upload and enqueue validation, malware scan, and OCR */
         post: operations["completeDocumentUpload"];
         delete?: never;
         options?: never;
@@ -324,8 +385,23 @@ export interface paths {
         get: operations["getDocument"];
         put?: never;
         post?: never;
-        /** Enqueue idempotent deletion of the file and derived OCR data */
         delete: operations["deleteDocument"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/applications/{applicationId}/documents/{documentId}/retry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["retryDocumentProcessing"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -335,12 +411,33 @@ export interface paths {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+                documentId: components["parameters"]["DocumentId"];
+            };
             cookie?: never;
         };
         get: operations["getExtractedDocumentFields"];
-        put: operations["confirmExtractedDocumentFields"];
+        /** @description Autosaves an incomplete draft using optimistic revision control. */
+        put: operations["saveExtractedDocumentFields"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/applications/{applicationId}/documents/{documentId}/extracted-fields/confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Confirms one revision and synchronously runs deterministic checks. */
+        post: operations["confirmExtractedDocumentFields"];
         delete?: never;
         options?: never;
         head?: never;
@@ -363,14 +460,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/applications/{applicationId}/appointment": {
+    "/applications/{applicationId}/checks": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getAppointmentOptions"];
+        get: operations["listApplicationChecks"];
         put?: never;
         post?: never;
         delete?: never;
@@ -379,15 +476,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/applications/{applicationId}/appointment/monitoring": {
+    "/plans": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put: operations["setAppointmentMonitoring"];
+        get: operations["listPlans"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -395,7 +492,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/orders": {
+    "/entitlements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listEntitlements"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/applications/{applicationId}/activation-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Returns all eligible existing-credit, purchase, and single-credit upgrade alternatives. */
+        get: operations["listApplicationActivationOptions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/applications/{applicationId}/activation": {
         parameters: {
             query?: never;
             header?: never;
@@ -404,7 +534,24 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["createTestOrder"];
+        /** @description Uses a fully covering credit immediately or creates a test-payment order. */
+        post: operations["activateApplication"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getOrder"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -427,146 +574,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/rulesets": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listRulesets"];
-        put?: never;
-        post: operations["createRulesetDraft"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/rulesets/{rulesetId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                rulesetId: components["parameters"]["RulesetId"];
-            };
-            cookie?: never;
-        };
-        get: operations["getRuleset"];
-        put: operations["replaceRulesetDraft"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/rulesets/{rulesetId}/publish": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["publishRuleset"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/sources/{sourceId}/snapshots": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["captureSourceSnapshot"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Return worker and adapter health without document content */
-        get: operations["getAdminHealth"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/adapters/{adapterId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch: operations["updateAdapter"];
-        trace?: never;
-    };
-    "/admin/audit-events": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listAuditEvents"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** Format: uuid */
         Uuid: string;
-        /** @enum {string} */
-        Country: "IT" | "ES" | "JP";
-        /** @enum {string} */
-        VisaType: "tourist";
-        /** @enum {string} */
-        UserRole: "applicant" | "administrator";
+        Money: {
+            amountMinor: number;
+            /** @example RUB */
+            currency: string;
+        };
         TelegramAuthRequest: {
             initData: string;
         };
         AuthSession: {
-            accessToken: string;
+            user: components["schemas"]["UserProfile"];
             /** Format: date-time */
             expiresAt: string;
-            user: components["schemas"]["UserProfile"];
         };
         UserProfile: {
             id: components["schemas"]["Uuid"];
-            role: components["schemas"]["UserRole"];
             telegramDisplayName: string;
+            /** @description Display-only; never used as identity */
+            telegramUsername?: string | null;
             hasCurrentConsent: boolean;
         };
         Consent: {
@@ -579,50 +610,89 @@ export interface components {
             /** Format: date-time */
             acceptedAt?: string | null;
         };
+        AcceptConsentInput: {
+            version: string;
+        };
         ConsentAcceptance: {
             version: string;
             /** Format: date-time */
             acceptedAt: string;
         };
-        AcceptConsentInput: {
-            version: string;
-        };
         NotificationPreferences: {
-            nonCriticalTelegramEnabled: boolean;
+            deadlineRemindersEnabled: boolean;
+            /**
+             * @example [
+             *       7,
+             *       2
+             *     ]
+             */
+            reminderOffsetsDays: number[];
+            /** @example Europe/Moscow */
+            timezone: string;
             /** Format: date-time */
             updatedAt: string;
         };
         UpdateNotificationPreferencesInput: {
-            nonCriticalTelegramEnabled?: boolean;
+            deadlineRemindersEnabled?: boolean;
+            reminderOffsetsDays?: number[];
+            timezone?: string;
+        };
+        Option: {
+            code: string;
+            label: string;
+        };
+        ApplicationOptions: {
+            countries: components["schemas"]["Option"][];
+            visaTypes: components["schemas"]["Option"][];
+            submissionCities: components["schemas"]["Option"][];
+            employmentStatuses: components["schemas"]["Option"][];
+            accessModes: components["schemas"]["Option"][];
         };
         /** @enum {string} */
-        ApplicationStatus: "draft" | "active" | "closed";
-        ApplicationInput: {
-            country: components["schemas"]["Country"];
-            visaType: components["schemas"]["VisaType"];
-            purpose: string;
+        EmploymentStatus: "employed" | "self_employed" | "student" | "retired" | "unemployed";
+        /** @enum {string} */
+        AccessMode: "organizer_only" | "shared";
+        /** @enum {string} */
+        ApplicationStatus: "draft" | "awaiting_activation" | "active" | "upgrade_required" | "closed";
+        CreateApplicationInput: {
+            /** @enum {string} */
+            country: "IT";
+            /** @enum {string} */
+            visaType: "tourist";
             /** Format: date */
             tripStartsOn: string;
             /** Format: date */
             tripEndsOn: string;
-            submissionCity: string;
+            submissionCityCode: string;
+            /** Format: date */
+            applicantDateOfBirth: string;
+            employmentStatus: components["schemas"]["EmploymentStatus"];
+            accessMode: components["schemas"]["AccessMode"];
+            /** @description Required for organizer_only when other adults are added */
+            organizerConsentAttested?: boolean;
         };
-        ApplicationPatch: {
-            country?: components["schemas"]["Country"];
-            visaType?: components["schemas"]["VisaType"];
-            purpose?: string;
+        UpdateApplicationInput: {
             /** Format: date */
             tripStartsOn?: string;
             /** Format: date */
             tripEndsOn?: string;
-            submissionCity?: string;
+            submissionCityCode?: string;
+            /** Format: date */
+            visitDate?: string | null;
+            accessMode?: components["schemas"]["AccessMode"];
+            organizerConsentAttested?: boolean;
         };
-        Application: components["schemas"]["ApplicationInput"] & {
+        Application: components["schemas"]["CreateApplicationInput"] & {
             id: components["schemas"]["Uuid"];
-            status: components["schemas"]["ApplicationStatus"];
             ownerId: components["schemas"]["Uuid"];
+            status: components["schemas"]["ApplicationStatus"];
+            /** Format: date */
+            visitDate?: string | null;
+            participantCount: number;
             /** Format: uuid */
             rulesetId?: string | null;
+            rulesetVersion?: string | null;
+            requirementsUpdateRequired: boolean;
             /** Format: date-time */
             retentionScheduledFor?: string | null;
             /** Format: date-time */
@@ -634,41 +704,105 @@ export interface components {
             items: components["schemas"]["Application"][];
             nextCursor?: string | null;
         };
-        FamilyMemberInput: {
+        IdentityProfile: {
+            surnameLatin: string;
+            givenNamesLatin: string;
+            surnameCyrillic: string;
+            givenNameCyrillic: string;
+            patronymicCyrillic?: string | null;
+            /** Format: date */
+            dateOfBirth: string;
+            passportNumber: string;
+            /** Format: date */
+            passportIssuedOn: string;
+            /** Format: date */
+            passportExpiresOn: string;
+            /** @enum {string} */
+            citizenshipCountry: "RU";
+            /** @enum {string} */
+            issuingCountry: "RU";
+        };
+        /** @enum {string} */
+        ProfileStatus: "missing" | "draft" | "confirmed";
+        Applicant: {
+            id: components["schemas"]["Uuid"];
+            /** Format: date */
+            dateOfBirth: string;
+            employmentStatus: components["schemas"]["EmploymentStatus"];
+            profileStatus: components["schemas"]["ProfileStatus"];
+            identityProfile?: components["schemas"]["IdentityProfile"];
+        };
+        UpdateApplicantInput: {
+            /** Format: date */
+            dateOfBirth?: string;
+            employmentStatus?: components["schemas"]["EmploymentStatus"];
+            identityProfile?: components["schemas"]["IdentityProfile"];
+        };
+        /** @enum {string} */
+        Relationship: "spouse" | "child" | "parent" | "sibling" | "relative" | "friend" | "other";
+        CreateMemberInput: {
             displayName: string;
             /** Format: date */
             dateOfBirth: string;
-            /** @enum {string} */
-            relationship: "spouse" | "child" | "parent" | "other";
+            relationship: components["schemas"]["Relationship"];
+            identityProfile?: components["schemas"]["IdentityProfile"];
         };
-        FamilyMemberPatch: {
+        UpdateMemberInput: {
             displayName?: string;
             /** Format: date */
             dateOfBirth?: string;
-            /** @enum {string} */
-            relationship?: "spouse" | "child" | "parent" | "other";
+            relationship?: components["schemas"]["Relationship"];
+            identityProfile?: components["schemas"]["IdentityProfile"];
         };
-        FamilyMember: components["schemas"]["FamilyMemberInput"] & {
+        Member: components["schemas"]["CreateMemberInput"] & {
             id: components["schemas"]["Uuid"];
+            profileStatus: components["schemas"]["ProfileStatus"];
+            /** @enum {string} */
+            accessStatus: "owner_managed" | "not_invited" | "invited" | "accepted";
+            /** @enum {string} */
+            coverageStatus: "covered" | "payment_required";
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
         };
-        FamilyMemberList: {
-            items: components["schemas"]["FamilyMember"][];
+        MemberList: {
+            items: components["schemas"]["Member"][];
         };
-        /** @enum {string} */
-        ChecklistItemStatus: "todo" | "in_progress" | "done" | "not_applicable";
+        MemberInvite: {
+            id: components["schemas"]["Uuid"];
+            applicationId: components["schemas"]["Uuid"];
+            memberId: components["schemas"]["Uuid"];
+            /** Format: uri */
+            inviteUrl: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        ApplicationAccess: {
+            applicationId: components["schemas"]["Uuid"];
+            /** @enum {string} */
+            role: "owner" | "participant";
+            /** Format: uuid */
+            memberId: string | null;
+        };
+        Subject: {
+            /** @enum {string} */
+            type: "applicant" | "family_member";
+            id: components["schemas"]["Uuid"];
+        } | null;
         ChecklistItem: {
             id: components["schemas"]["Uuid"];
+            /** @enum {string} */
+            kind: "action" | "document";
+            /** @enum {string|null} */
+            documentType?: "visa_application_form" | "employment_certificate" | "bank_statement" | null;
             title: string;
             description?: string;
             /** @enum {string} */
-            scope: "application" | "applicant" | "family_member";
-            /** Format: uuid */
-            memberId?: string | null;
-            status: components["schemas"]["ChecklistItemStatus"];
+            scope: "application" | "participant";
+            subject?: components["schemas"]["Subject"];
+            /** @enum {string} */
+            status: "todo" | "in_progress" | "done" | "not_applicable";
             ruleId: components["schemas"]["Uuid"];
             sourceId: components["schemas"]["Uuid"];
         };
@@ -677,44 +811,89 @@ export interface components {
             total: number;
             percent: number;
         };
+        RequirementsUpdate: {
+            available: boolean;
+            summary: string[];
+            /** Format: date-time */
+            detectedAt: string;
+        };
+        Checklist: {
+            applicationId: components["schemas"]["Uuid"];
+            rulesetId: components["schemas"]["Uuid"];
+            rulesetVersion: string;
+            /** Format: date-time */
+            generatedAt: string;
+            progress: components["schemas"]["ChecklistProgress"];
+            requirementsUpdateRequired: boolean;
+            requirementsUpdate?: components["schemas"]["RequirementsUpdate"];
+            items: components["schemas"]["ChecklistItem"][];
+        };
         UpdateChecklistItemInput: {
-            status: components["schemas"]["ChecklistItemStatus"];
+            /** @enum {string} */
+            status: "todo" | "in_progress" | "done" | "not_applicable";
         };
         UpdateChecklistItemResult: {
             item: components["schemas"]["ChecklistItem"];
             progress: components["schemas"]["ChecklistProgress"];
         };
-        Checklist: {
-            applicationId: components["schemas"]["Uuid"];
-            rulesetId: components["schemas"]["Uuid"];
-            /** Format: date-time */
-            generatedAt: string;
-            progress: components["schemas"]["ChecklistProgress"];
-            items: components["schemas"]["ChecklistItem"][];
-        };
         Deadline: {
             id: components["schemas"]["Uuid"];
+            checklistItemId: components["schemas"]["Uuid"];
             title: string;
             /** Format: date */
+            availableFrom: string;
+            /** Format: date */
             dueOn: string;
-            critical: boolean;
-            ruleId: components["schemas"]["Uuid"];
+            readonly overdue: boolean;
+            completed: boolean;
         };
         DeadlineList: {
+            /** @enum {string} */
+            calculationStatus: "calculated" | "visit_date_required";
             items: components["schemas"]["Deadline"][];
         };
         /** @enum {string} */
-        DocumentStatus: "awaiting_upload" | "queued" | "validating" | "rejected" | "ocr_processing" | "awaiting_confirmation" | "checking" | "ready" | "failed" | "deletion_pending" | "deleted";
-        DocumentUploadInput: {
+        DocumentStatus: "awaiting_upload" | "queued" | "processing" | "awaiting_confirmation" | "ready" | "rejected" | "failed" | "superseded" | "deletion_pending" | "deleted";
+        /** @enum {string} */
+        OcrOutcome: "succeeded" | "partial" | "failed";
+        CreateDocumentUploadInput: {
             checklistItemId: components["schemas"]["Uuid"];
-            /** Format: uuid */
-            memberId?: string | null;
+            subject: components["schemas"]["Subject"];
             /** @enum {string} */
-            contentType: "application/pdf" | "image/jpeg" | "image/png";
+            documentType: "visa_application_form" | "employment_certificate" | "bank_statement";
+            /** @enum {string} */
+            contentType: "application/pdf";
             sizeBytes: number;
         };
         CompleteDocumentUploadInput: {
             uploadToken: string;
+        };
+        Document: {
+            id: components["schemas"]["Uuid"];
+            applicationId: components["schemas"]["Uuid"];
+            checklistItemId: components["schemas"]["Uuid"];
+            subject: components["schemas"]["Subject"];
+            /** @enum {string} */
+            documentType: "visa_application_form" | "employment_certificate" | "bank_statement";
+            /** @enum {string} */
+            contentType: "application/pdf";
+            sizeBytes: number;
+            status: components["schemas"]["DocumentStatus"];
+            ocrOutcome?: components["schemas"]["OcrOutcome"];
+            /** @enum {string|null} */
+            rejectionCode?: "encrypted_pdf" | "empty_pdf" | "corrupt_pdf" | "unsupported_pdf" | "size_exceeded" | null;
+            failureCode?: string | null;
+            retryCount: number;
+            nextPollAfterSeconds?: number | null;
+            /** Format: uuid */
+            supersedesDocumentId?: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        DocumentList: {
+            items: components["schemas"]["Document"][];
         };
         DocumentUploadRequest: {
             document: components["schemas"]["Document"];
@@ -729,183 +908,150 @@ export interface components {
             /** Format: date-time */
             expiresAt: string;
         };
-        Document: {
-            id: components["schemas"]["Uuid"];
-            applicationId: components["schemas"]["Uuid"];
-            checklistItemId: components["schemas"]["Uuid"];
-            /** Format: uuid */
-            memberId?: string | null;
-            contentType: string;
-            sizeBytes: number;
-            status: components["schemas"]["DocumentStatus"];
-            /** @enum {string|null} */
-            rejectionCode?: "unsupported_type" | "size_exceeded" | "malware_detected" | "unreadable" | null;
-            failureCode?: string | null;
-            ocrEngineVersion?: string | null;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        DocumentList: {
-            items: components["schemas"]["Document"][];
-        };
         ExtractedField: {
             key: string;
-            label?: string;
-            value: string;
-            confidence: number;
-            confirmed: boolean;
+            label: string;
+            value: string | null;
+            /** @enum {string} */
+            source: "ocr" | "manual";
+            confidence?: number | null;
         };
-        ExtractedFields: {
+        ExtractedFieldsDraft: {
             documentId: components["schemas"]["Uuid"];
-            ocrEngineVersion: string;
+            revision: number;
+            ocrOutcome: components["schemas"]["OcrOutcome"];
+            fields: components["schemas"]["ExtractedField"][];
+            /** Format: date-time */
+            savedAt: string;
+            /** Format: date-time */
+            confirmedAt?: string | null;
+        };
+        SaveExtractedFieldsInput: {
+            revision: number;
             fields: components["schemas"]["ExtractedField"][];
         };
         ConfirmExtractedFieldsInput: {
-            fields: {
-                key: string;
-                value: string;
-            }[];
+            revision: number;
         };
-        /** @enum {string} */
-        CheckLevel: "critical" | "warning" | "passed" | "not_checked";
-        DocumentCheck: {
+        Check: {
             id: components["schemas"]["Uuid"];
-            level: components["schemas"]["CheckLevel"];
+            code: string;
+            title: string;
             explanation: string;
+            /** @enum {string} */
+            scope: "document" | "participant" | "cross_document" | "application";
+            /** @enum {string} */
+            level: "critical" | "warning" | "passed" | "not_checked";
+            documentIds: components["schemas"]["Uuid"][];
+            fieldKeys: string[];
             ruleId: components["schemas"]["Uuid"];
             sourceId: components["schemas"]["Uuid"];
+            notCheckedReason?: string | null;
+            resolution?: string | null;
         };
-        DocumentChecks: {
+        CheckSummary: {
+            critical: number;
+            warning: number;
+            passed: number;
+            notChecked: number;
+        };
+        CheckResult: {
             /** @enum {string} */
-            status: "pending" | "completed" | "failed";
+            status: "pending" | "completed";
+            stale: boolean;
             disclaimer: string;
-            items: components["schemas"]["DocumentCheck"][];
+            summary: components["schemas"]["CheckSummary"];
+            items: components["schemas"]["Check"][];
         };
-        AppointmentOptions: {
-            country: components["schemas"]["Country"];
-            /** Format: uri */
-            officialUrl: string;
-            /** Format: date-time */
-            verifiedAt: string;
-            capabilities: ("official_link" | "slot_monitoring" | "unsupported")[];
-            monitoring: components["schemas"]["AppointmentMonitoring"];
+        DocumentConfirmationResult: {
+            document: components["schemas"]["Document"];
+            checks: components["schemas"]["CheckResult"];
         };
-        AppointmentMonitoring: {
-            available: boolean;
-            enabled: boolean;
-            /** @enum {string|null} */
-            unavailableReason?: "country_unsupported" | "feature_disabled" | "adapter_unhealthy" | null;
+        /** @enum {string} */
+        CoverageType: "personal" | "friends" | "family";
+        Plan: {
+            id: components["schemas"]["Uuid"];
+            name: string;
+            coverageType: components["schemas"]["CoverageType"];
+            applicationCredits: number;
+            /** @description Personal 1 */
+            includedParticipants: number;
+            additionalSeatsAllowed: boolean;
+            additionalSeatPrice?: components["schemas"]["Money"];
+            price: components["schemas"]["Money"];
         };
-        SetAppointmentMonitoringInput: {
-            enabled: boolean;
+        PlanList: {
+            items: components["schemas"]["Plan"][];
         };
-        CreateOrderInput: {
+        ApplicationCredit: {
+            id: components["schemas"]["Uuid"];
+            coverageType: components["schemas"]["CoverageType"];
+            includedParticipants: number;
             /** @enum {string} */
-            plan: "pilot";
+            status: "available" | "reserved" | "consumed";
+            /** Format: uuid */
+            consumedByApplicationId?: string | null;
+        };
+        Entitlement: {
+            id: components["schemas"]["Uuid"];
+            plan: components["schemas"]["Plan"];
+            /** Format: date-time */
+            purchasedAt: string;
+            /**
+             * Format: date-time
+             * @description Null in MVP
+             */
+            expiresAt?: string | null;
+            credits: components["schemas"]["ApplicationCredit"][];
+        };
+        EntitlementList: {
+            items: components["schemas"]["Entitlement"][];
+        };
+        ActivationOption: {
+            id: components["schemas"]["Uuid"];
+            /** @enum {string} */
+            kind: "existing_credit" | "purchase" | "upgrade_credit";
+            plan?: components["schemas"]["Plan"];
+            /** Format: uuid */
+            creditId?: string | null;
+            coverageType: components["schemas"]["CoverageType"];
+            includedParticipants: number;
+            additionalSeatCount: number;
+            amountDue: components["schemas"]["Money"];
+            recommended: boolean;
+            eligibilityNotes?: string[];
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        ActivationOptions: {
+            applicationId: components["schemas"]["Uuid"];
+            participantCount: number;
+            items: components["schemas"]["ActivationOption"][];
+        };
+        ActivateApplicationInput: {
+            activationOptionId: components["schemas"]["Uuid"];
         };
         Order: {
             id: components["schemas"]["Uuid"];
-            /** @enum {string} */
-            plan: "pilot";
+            applicationId: components["schemas"]["Uuid"];
+            activationOptionId: components["schemas"]["Uuid"];
             /** @enum {string} */
             provider: "test";
             /** @enum {string} */
-            status: "pending_test_confirmation" | "paid_test";
+            status: "pending_test_confirmation" | "paid_test" | "cancelled";
+            amount: components["schemas"]["Money"];
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
         };
-        /** @enum {string} */
-        RulesetStatus: "draft" | "review" | "published";
-        Rule: {
-            id: components["schemas"]["Uuid"];
-            sourceId: components["schemas"]["Uuid"];
-            /** Format: date-time */
-            sourceVerifiedAt: string;
-            conditions: {
-                [key: string]: unknown;
-            };
+        ActivationResult: {
             /** @enum {string} */
-            actionType: "require_document" | "require_action" | "calculate_deadline" | "validate_field";
-            action: {
-                [key: string]: unknown;
-            };
-        };
-        CreateRulesetInput: {
-            country: components["schemas"]["Country"];
-            version: string;
+            status: "payment_required" | "activated";
+            application: components["schemas"]["Application"];
+            order?: components["schemas"]["Order"];
             /** Format: uuid */
-            basedOnRulesetId?: string | null;
-        };
-        ReplaceRulesetInput: {
-            rules: components["schemas"]["Rule"][];
-        };
-        RulesetSummary: {
-            id: components["schemas"]["Uuid"];
-            country: components["schemas"]["Country"];
-            version: string;
-            status: components["schemas"]["RulesetStatus"];
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            publishedAt?: string | null;
-        };
-        RulesetList: {
-            items: components["schemas"]["RulesetSummary"][];
-        };
-        SourceDiff: {
-            sourceId: components["schemas"]["Uuid"];
-            previousChecksum: string | null;
-            currentChecksum: string;
-            summary: string;
-        };
-        Ruleset: components["schemas"]["RulesetSummary"] & {
-            rules: components["schemas"]["Rule"][];
-            sourceDiffs: components["schemas"]["SourceDiff"][];
-        };
-        AsyncOperation: {
-            id: components["schemas"]["Uuid"];
-            kind: string;
-            /** @enum {string} */
-            status: "queued" | "running" | "completed" | "failed";
-            /** Format: date-time */
-            createdAt: string;
-        };
-        ComponentHealth: {
-            id: string;
-            /** @enum {string} */
-            kind: "worker" | "adapter";
-            enabled: boolean;
-            /** @enum {string} */
-            status: "healthy" | "degraded" | "circuit_open" | "disabled" | "unknown";
-            errorClass?: string | null;
-            /** Format: date-time */
-            checkedAt: string;
-            /** Format: date-time */
-            lastSucceededAt?: string | null;
-        };
-        ComponentHealthList: {
-            items: components["schemas"]["ComponentHealth"][];
-        };
-        UpdateAdapterInput: {
-            enabled: boolean;
-        };
-        AuditEvent: {
-            id: components["schemas"]["Uuid"];
-            actorId: components["schemas"]["Uuid"];
-            action: string;
-            targetType: string;
-            targetId: string;
-            /** Format: date-time */
-            occurredAt: string;
-            requestId: string;
-        };
-        AuditEventPage: {
-            items: components["schemas"]["AuditEvent"][];
-            nextCursor?: string | null;
+            consumedCreditId?: string | null;
         };
         Problem: {
             /** Format: uri-reference */
@@ -926,52 +1072,31 @@ export interface components {
         };
     };
     responses: {
-        /** @description Authentication is missing or invalid */
         Unauthorized: {
             headers: {
                 [name: string]: unknown;
             };
-            content: {
-                "application/problem+json": components["schemas"]["Problem"];
-            };
+            content?: never;
         };
-        /** @description The authenticated actor is not allowed to perform this operation */
-        Forbidden: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/problem+json": components["schemas"]["Problem"];
-            };
-        };
-        /** @description Resource does not exist or is not visible to this actor */
         NotFound: {
             headers: {
                 [name: string]: unknown;
             };
-            content: {
-                "application/problem+json": components["schemas"]["Problem"];
-            };
+            content?: never;
         };
-        /** @description The command conflicts with the current resource state */
         Conflict: {
             headers: {
                 [name: string]: unknown;
             };
-            content: {
-                "application/problem+json": components["schemas"]["Problem"];
-            };
+            content?: never;
         };
-        /** @description The current document-processing consent must be accepted first */
-        ConsentRequired: {
+        Gone: {
             headers: {
                 [name: string]: unknown;
             };
-            content: {
-                "application/problem+json": components["schemas"]["Problem"];
-            };
+            content?: never;
         };
-        /** @description One or more input fields are invalid */
+        /** @description Validation failed */
         ValidationFailed: {
             headers: {
                 [name: string]: unknown;
@@ -980,21 +1105,346 @@ export interface components {
                 "application/problem+json": components["schemas"]["ValidationProblem"];
             };
         };
+        /** @description Request failed */
+        ProblemResponse: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["Problem"];
+            };
+        };
+        /** @description Authenticated */
+        AuthSession: {
+            headers: {
+                "Set-Cookie": components["headers"]["SessionCookie"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["AuthSession"];
+            };
+        };
+        /** @description Current user */
+        UserProfile: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["UserProfile"];
+            };
+        };
+        /** @description Current consent */
+        Consent: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Consent"];
+            };
+        };
+        /** @description Acceptance */
+        ConsentAcceptance: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ConsentAcceptance"];
+            };
+        };
+        /** @description Preferences */
+        NotificationPreferences: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["NotificationPreferences"];
+            };
+        };
+        /** @description Allowed values */
+        ApplicationOptions: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ApplicationOptions"];
+            };
+        };
+        /** @description Application */
+        Application: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Application"];
+            };
+        };
+        /** @description Application page */
+        ApplicationPage: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ApplicationPage"];
+            };
+        };
+        /** @description Applicant */
+        Applicant: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Applicant"];
+            };
+        };
+        /** @description Member */
+        Member: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Member"];
+            };
+        };
+        /** @description Members */
+        MemberList: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["MemberList"];
+            };
+        };
+        /** @description Invite */
+        MemberInvite: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["MemberInvite"];
+            };
+        };
+        /** @description Access */
+        ApplicationAccess: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ApplicationAccess"];
+            };
+        };
+        /** @description Checklist */
+        Checklist: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Checklist"];
+            };
+        };
+        /** @description Updated item */
+        UpdateChecklistItemResult: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["UpdateChecklistItemResult"];
+            };
+        };
+        /** @description Deadlines */
+        DeadlineList: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["DeadlineList"];
+            };
+        };
+        /** @description Document */
+        Document: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Document"];
+            };
+        };
+        /** @description Documents */
+        DocumentList: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["DocumentList"];
+            };
+        };
+        /** @description Signed upload */
+        DocumentUploadRequest: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["DocumentUploadRequest"];
+            };
+        };
+        /** @description Editable fields */
+        ExtractedFieldsDraft: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ExtractedFieldsDraft"];
+            };
+        };
+        /** @description Confirmed and checked */
+        DocumentConfirmationResult: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["DocumentConfirmationResult"];
+            };
+        };
+        /** @description Checks */
+        CheckResult: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["CheckResult"];
+            };
+        };
+        /** @description Plans */
+        PlanList: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["PlanList"];
+            };
+        };
+        /** @description Entitlements */
+        EntitlementList: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["EntitlementList"];
+            };
+        };
+        /** @description Alternatives */
+        ActivationOptions: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ActivationOptions"];
+            };
+        };
+        /** @description Activation state */
+        ActivationResult: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ActivationResult"];
+            };
+        };
+        /** @description Order */
+        Order: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Order"];
+            };
+        };
     };
     parameters: {
         ApplicationId: components["schemas"]["Uuid"];
         MemberId: components["schemas"]["Uuid"];
         ChecklistItemId: components["schemas"]["Uuid"];
         DocumentId: components["schemas"]["Uuid"];
-        RulesetId: components["schemas"]["Uuid"];
-        SourceId: components["schemas"]["Uuid"];
-        /** @description UUID generated by the client and reused only when retrying the same command. */
-        IdempotencyKey: string;
+        OrderId: components["schemas"]["Uuid"];
         Cursor: string;
         Limit: number;
+        IdempotencyKey: string;
     };
-    requestBodies: never;
-    headers: never;
+    requestBodies: {
+        TelegramAuth: {
+            content: {
+                "application/json": components["schemas"]["TelegramAuthRequest"];
+            };
+        };
+        AcceptConsent: {
+            content: {
+                "application/json": components["schemas"]["AcceptConsentInput"];
+            };
+        };
+        UpdateNotificationPreferences: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["UpdateNotificationPreferencesInput"];
+            };
+        };
+        CreateApplication: {
+            content: {
+                "application/json": components["schemas"]["CreateApplicationInput"];
+            };
+        };
+        UpdateApplication: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["UpdateApplicationInput"];
+            };
+        };
+        UpdateApplicant: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["UpdateApplicantInput"];
+            };
+        };
+        CreateMember: {
+            content: {
+                "application/json": components["schemas"]["CreateMemberInput"];
+            };
+        };
+        UpdateMember: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["UpdateMemberInput"];
+            };
+        };
+        UpdateChecklistItem: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["UpdateChecklistItemInput"];
+            };
+        };
+        CreateDocumentUpload: {
+            content: {
+                "application/json": components["schemas"]["CreateDocumentUploadInput"];
+            };
+        };
+        CompleteDocumentUpload: {
+            content: {
+                "application/json": components["schemas"]["CompleteDocumentUploadInput"];
+            };
+        };
+        SaveExtractedFields: {
+            content: {
+                "application/json": components["schemas"]["SaveExtractedFieldsInput"];
+            };
+        };
+        ConfirmExtractedFields: {
+            content: {
+                "application/json": components["schemas"]["ConfirmExtractedFieldsInput"];
+            };
+        };
+        ActivateApplication: {
+            content: {
+                "application/json": components["schemas"]["ActivateApplicationInput"];
+            };
+        };
+    };
+    headers: {
+        /** @description Opaque HttpOnly, Secure, SameSite=Lax session cookie */
+        SessionCookie: string;
+    };
     pathItems: never;
 }
 export type $defs = Record<string, never>;
@@ -1006,30 +1456,9 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TelegramAuthRequest"];
-            };
-        };
+        requestBody: components["requestBodies"]["TelegramAuth"];
         responses: {
-            /** @description Existing profile authenticated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuthSession"];
-                };
-            };
-            /** @description Profile created and authenticated */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuthSession"];
-                };
-            };
+            200: components["responses"]["AuthSession"];
             401: components["responses"]["Unauthorized"];
         };
     };
@@ -1042,7 +1471,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Session revoked */
+            /** @description Session revoked and cookie expired */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -1060,15 +1489,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Current profile */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserProfile"];
-                };
-            };
+            200: components["responses"]["UserProfile"];
         };
     };
     getCurrentConsent: {
@@ -1080,15 +1501,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Current consent text and acceptance state */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Consent"];
-                };
-            };
+            200: components["responses"]["Consent"];
         };
     };
     acceptCurrentConsent: {
@@ -1098,21 +1511,9 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AcceptConsentInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["AcceptConsent"];
         responses: {
-            /** @description Consent accepted */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ConsentAcceptance"];
-                };
-            };
+            200: components["responses"]["ConsentAcceptance"];
             409: components["responses"]["Conflict"];
         };
     };
@@ -1125,15 +1526,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Notification preferences */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationPreferences"];
-                };
-            };
+            200: components["responses"]["NotificationPreferences"];
         };
     };
     updateNotificationPreferences: {
@@ -1143,21 +1536,22 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/merge-patch+json": components["schemas"]["UpdateNotificationPreferencesInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["UpdateNotificationPreferences"];
         responses: {
-            /** @description Updated preferences */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationPreferences"];
-                };
-            };
+            200: components["responses"]["NotificationPreferences"];
+            422: components["responses"]["ValidationFailed"];
+        };
+    };
+    getApplicationOptions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["ApplicationOptions"];
         };
     };
     listApplications: {
@@ -1172,15 +1566,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Application page */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApplicationPage"];
-                };
-            };
+            200: components["responses"]["ApplicationPage"];
         };
     };
     createApplication: {
@@ -1190,21 +1576,9 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ApplicationInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["CreateApplication"];
         responses: {
-            /** @description Draft application created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Application"];
-                };
-            };
+            201: components["responses"]["Application"];
             422: components["responses"]["ValidationFailed"];
         };
     };
@@ -1219,16 +1593,29 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Application */
-            200: {
+            200: components["responses"]["Application"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    deleteDraftApplication: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Draft deleted */
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["Application"];
-                };
+                content?: never;
             };
-            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
         };
     };
     updateApplication: {
@@ -1240,21 +1627,9 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/merge-patch+json": components["schemas"]["ApplicationPatch"];
-            };
-        };
+        requestBody: components["requestBodies"]["UpdateApplication"];
         responses: {
-            /** @description Updated application */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Application"];
-                };
-            };
+            200: components["responses"]["Application"];
             409: components["responses"]["Conflict"];
             422: components["responses"]["ValidationFailed"];
         };
@@ -1263,7 +1638,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1273,19 +1647,11 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Application closed; document retention deadline scheduled */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Application"];
-                };
-            };
+            200: components["responses"]["Application"];
             409: components["responses"]["Conflict"];
         };
     };
-    listFamilyMembers: {
+    getApplicant: {
         parameters: {
             query?: never;
             header?: never;
@@ -1296,18 +1662,10 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Family members */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FamilyMemberList"];
-                };
-            };
+            200: components["responses"]["Applicant"];
         };
     };
-    createFamilyMember: {
+    updateApplicant: {
         parameters: {
             query?: never;
             header?: never;
@@ -1316,26 +1674,43 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["FamilyMemberInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["UpdateApplicant"];
         responses: {
-            /** @description Family member created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FamilyMember"];
-                };
+            200: components["responses"]["Applicant"];
+            422: components["responses"]["ValidationFailed"];
+        };
+    };
+    listMembers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
             };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["MemberList"];
+        };
+    };
+    createMember: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["CreateMember"];
+        responses: {
+            201: components["responses"]["Member"];
             409: components["responses"]["Conflict"];
             422: components["responses"]["ValidationFailed"];
         };
     };
-    deleteFamilyMember: {
+    deleteMember: {
         parameters: {
             query?: never;
             header?: never;
@@ -1347,7 +1722,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Family member deleted */
+            /** @description Member removed */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -1357,7 +1732,7 @@ export interface operations {
             409: components["responses"]["Conflict"];
         };
     };
-    updateFamilyMember: {
+    updateMember: {
         parameters: {
             query?: never;
             header?: never;
@@ -1367,23 +1742,46 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/merge-patch+json": components["schemas"]["FamilyMemberPatch"];
-            };
-        };
+        requestBody: components["requestBodies"]["UpdateMember"];
         responses: {
-            /** @description Updated family member */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FamilyMember"];
-                };
-            };
+            200: components["responses"]["Member"];
             409: components["responses"]["Conflict"];
-            422: components["responses"]["ValidationFailed"];
+        };
+    };
+    createMemberInvite: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+                memberId: components["parameters"]["MemberId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: components["responses"]["MemberInvite"];
+            409: components["responses"]["Conflict"];
+        };
+    };
+    acceptMemberInvite: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                inviteToken: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["ApplicationAccess"];
+            409: components["responses"]["Conflict"];
+            410: components["responses"]["Gone"];
         };
     };
     getChecklist: {
@@ -1397,50 +1795,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Generated checklist */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Checklist"];
-                };
-            };
+            200: components["responses"]["Checklist"];
             404: components["responses"]["NotFound"];
-        };
-    };
-    generateChecklist: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
-                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
-            };
-            path: {
-                applicationId: components["parameters"]["ApplicationId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Checklist generated and ruleset pinned */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Checklist"];
-                };
-            };
-            409: components["responses"]["Conflict"];
-            422: components["responses"]["ValidationFailed"];
         };
     };
     recalculateChecklist: {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1450,15 +1812,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Checklist recalculated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Checklist"];
-                };
-            };
+            200: components["responses"]["Checklist"];
             409: components["responses"]["Conflict"];
         };
     };
@@ -1472,21 +1826,9 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/merge-patch+json": components["schemas"]["UpdateChecklistItemInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["UpdateChecklistItem"];
         responses: {
-            /** @description Updated item and aggregate progress */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UpdateChecklistItemResult"];
-                };
-            };
+            200: components["responses"]["UpdateChecklistItemResult"];
             409: components["responses"]["Conflict"];
         };
     };
@@ -1501,15 +1843,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Calculated deadlines */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeadlineList"];
-                };
-            };
+            200: components["responses"]["DeadlineList"];
         };
     };
     listDocuments: {
@@ -1523,22 +1857,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Document metadata only */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DocumentList"];
-                };
-            };
+            200: components["responses"]["DocumentList"];
         };
     };
     createDocumentUploadRequest: {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1546,22 +1871,10 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["DocumentUploadInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["CreateDocumentUpload"];
         responses: {
-            /** @description Upload request created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DocumentUploadRequest"];
-                };
-            };
-            409: components["responses"]["ConsentRequired"];
+            201: components["responses"]["DocumentUploadRequest"];
+            409: components["responses"]["Conflict"];
             422: components["responses"]["ValidationFailed"];
         };
     };
@@ -1569,7 +1882,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1578,21 +1890,9 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CompleteDocumentUploadInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["CompleteDocumentUpload"];
         responses: {
-            /** @description Processing accepted */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Document"];
-                };
-            };
+            202: components["responses"]["Document"];
             409: components["responses"]["Conflict"];
         };
     };
@@ -1608,15 +1908,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Document processing state and metadata */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Document"];
-                };
-            };
+            200: components["responses"]["Document"];
             404: components["responses"]["NotFound"];
         };
     };
@@ -1624,7 +1916,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1635,15 +1926,25 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Deletion accepted */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Document"];
-                };
+            202: components["responses"]["Document"];
+        };
+    };
+    retryDocumentProcessing: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+                documentId: components["parameters"]["DocumentId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            202: components["responses"]["Document"];
+            409: components["responses"]["Conflict"];
         };
     };
     getExtractedDocumentFields: {
@@ -1658,15 +1959,22 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OCR fields awaiting or reflecting user confirmation */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ExtractedFields"];
-                };
+            200: components["responses"]["ExtractedFieldsDraft"];
+        };
+    };
+    saveExtractedDocumentFields: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+                documentId: components["parameters"]["DocumentId"];
             };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["SaveExtractedFields"];
+        responses: {
+            200: components["responses"]["ExtractedFieldsDraft"];
             409: components["responses"]["Conflict"];
         };
     };
@@ -1674,7 +1982,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
@@ -1683,21 +1990,9 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ConfirmExtractedFieldsInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["ConfirmExtractedFields"];
         responses: {
-            /** @description Fields confirmed and rule checks accepted */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Document"];
-                };
-            };
+            200: components["responses"]["DocumentConfirmationResult"];
             409: components["responses"]["Conflict"];
             422: components["responses"]["ValidationFailed"];
         };
@@ -1714,18 +2009,10 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Explainable deterministic checks */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DocumentChecks"];
-                };
-            };
+            200: components["responses"]["CheckResult"];
         };
     };
-    getAppointmentOptions: {
+    listApplicationChecks: {
         parameters: {
             query?: never;
             header?: never;
@@ -1736,18 +2023,34 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Verified official URL and adapter capabilities */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppointmentOptions"];
-                };
-            };
+            200: components["responses"]["CheckResult"];
         };
     };
-    setAppointmentMonitoring: {
+    listPlans: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["PlanList"];
+        };
+    };
+    listEntitlements: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["EntitlementList"];
+        };
+    };
+    listApplicationActivationOptions: {
         parameters: {
             query?: never;
             header?: never;
@@ -1756,299 +2059,61 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetAppointmentMonitoringInput"];
-            };
-        };
+        requestBody?: never;
         responses: {
-            /** @description Monitoring preference */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppointmentMonitoring"];
-                };
-            };
+            200: components["responses"]["ActivationOptions"];
             409: components["responses"]["Conflict"];
         };
     };
-    createTestOrder: {
+    activateApplication: {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
-            path?: never;
+            path: {
+                applicationId: components["parameters"]["ApplicationId"];
+            };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOrderInput"];
-            };
-        };
+        requestBody: components["requestBodies"]["ActivateApplication"];
         responses: {
-            /** @description Test order created; no payment details are accepted */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Order"];
-                };
+            200: components["responses"]["ActivationResult"];
+            202: components["responses"]["ActivationResult"];
+            409: components["responses"]["Conflict"];
+            410: components["responses"]["Gone"];
+        };
+    };
+    getOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: components["parameters"]["OrderId"];
             };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["Order"];
+            404: components["responses"]["NotFound"];
         };
     };
     confirmTestOrder: {
         parameters: {
             query?: never;
             header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
                 "Idempotency-Key": components["parameters"]["IdempotencyKey"];
             };
             path: {
-                orderId: components["schemas"]["Uuid"];
+                orderId: components["parameters"]["OrderId"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Order transitioned to paid_test */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Order"];
-                };
-            };
+            200: components["responses"]["ActivationResult"];
             409: components["responses"]["Conflict"];
-        };
-    };
-    listRulesets: {
-        parameters: {
-            query?: {
-                status?: components["schemas"]["RulesetStatus"];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Rulesets */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RulesetList"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    createRulesetDraft: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateRulesetInput"];
-            };
-        };
-        responses: {
-            /** @description Draft ruleset created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Ruleset"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    getRuleset: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                rulesetId: components["parameters"]["RulesetId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Ruleset including rules and source diff */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Ruleset"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    replaceRulesetDraft: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                rulesetId: components["parameters"]["RulesetId"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ReplaceRulesetInput"];
-            };
-        };
-        responses: {
-            /** @description Draft replaced */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Ruleset"];
-                };
-            };
-            409: components["responses"]["Conflict"];
-            422: components["responses"]["ValidationFailed"];
-        };
-    };
-    publishRuleset: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
-                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
-            };
-            path: {
-                rulesetId: components["parameters"]["RulesetId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Immutable published ruleset */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Ruleset"];
-                };
-            };
-            409: components["responses"]["Conflict"];
-            422: components["responses"]["ValidationFailed"];
-        };
-    };
-    captureSourceSnapshot: {
-        parameters: {
-            query?: never;
-            header: {
-                /** @description UUID generated by the client and reused only when retrying the same command. */
-                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
-            };
-            path: {
-                sourceId: components["parameters"]["SourceId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Source snapshot capture accepted */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AsyncOperation"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    getAdminHealth: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Component health */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ComponentHealthList"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    updateAdapter: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                adapterId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/merge-patch+json": components["schemas"]["UpdateAdapterInput"];
-            };
-        };
-        responses: {
-            /** @description Adapter state updated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ComponentHealth"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
-        };
-    };
-    listAuditEvents: {
-        parameters: {
-            query?: {
-                cursor?: components["parameters"]["Cursor"];
-                limit?: components["parameters"]["Limit"];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description PII-free audit event page */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuditEventPage"];
-                };
-            };
-            403: components["responses"]["Forbidden"];
         };
     };
 }

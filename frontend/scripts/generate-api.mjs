@@ -5,7 +5,7 @@ const source = new URL('../../api/openapi.yaml', import.meta.url)
 const target = new URL('../src/api/auth-schemas.json', import.meta.url)
 const { schemas } = parse(await readFile(source, 'utf8')).components
 
-const names = ['AuthSession', 'UserProfile', 'UserRole', 'Uuid']
+const names = ['AuthSession', 'UserProfile', 'Uuid']
 const selected = Object.fromEntries(
   names.map((name) => {
     if (!schemas[name]) throw new Error('Missing OpenAPI schema: ' + name)

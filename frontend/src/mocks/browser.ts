@@ -9,16 +9,16 @@ export const mockInitData = 'visaflow-local-fixture'
 
 const user = {
   id: '8b838e01-2ba6-4ef7-a1d3-31cf3be5854c',
-  role: 'applicant',
   telegramDisplayName: 'Тестовый заявитель',
   hasCurrentConsent: false,
 } satisfies Schema['UserProfile']
 
 const session = {
-  accessToken: 'visaflow-local-token',
   expiresAt: '2099-01-01T00:00:00Z',
   user,
 } satisfies Schema['AuthSession']
+
+let authenticated = false
 
 function unauthorized() {
   const problem = {
@@ -38,6 +38,7 @@ function unauthorized() {
 export const worker = setupWorker(
   http.post(API_BASE + '/auth/telegram', async ({ request }) => {
     const body: unknown = await request.json().catch(() => null)
+    authenticated = false
 
     if (
       typeof body !== 'object' ||
@@ -48,16 +49,12 @@ export const worker = setupWorker(
       return unauthorized()
     }
 
+    authenticated = true
     return HttpResponse.json(session)
   }),
 
-  http.get(API_BASE + '/me', ({ request }) => {
-    if (
-      request.headers.get('Authorization') !==
-      'Bearer ' + session.accessToken
-    ) {
-      return unauthorized()
-    }
+  http.get(API_BASE + '/me', () => {
+    if (!authenticated) return unauthorized()
 
     return HttpResponse.json(user)
   }),

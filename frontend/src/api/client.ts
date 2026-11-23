@@ -32,9 +32,7 @@ export async function signIn(initData: string) {
     throw new Error('Invalid auth response')
   }
 
-  const profile = await api.GET('/me', {
-    headers: { Authorization: 'Bearer ' + auth.data.accessToken },
-  })
+  const profile = await api.GET('/me')
 
   if (profile.response.status === 401) throw new AuthRejected()
   if (!profile.response.ok || !isProfile(profile.data)) {
