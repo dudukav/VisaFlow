@@ -1,0 +1,48 @@
+{
+  "definitions": {
+    "AuthSession": {
+      "type": "object",
+      "required": [
+        "user",
+        "expiresAt"
+      ],
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/UserProfile"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "UserProfile": {
+      "type": "object",
+      "required": [
+        "id",
+        "telegramDisplayName",
+        "hasCurrentConsent"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "telegramDisplayName": {
+          "type": "string"
+        },
+        "telegramUsername": {
+          "type": "string",
+          "nullable": true,
+          "description": "Display-only; never used as identity"
+        },
+        "hasCurrentConsent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Uuid": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}
