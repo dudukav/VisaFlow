@@ -1,0 +1,10 @@
+{
+  "summary": "Upload without current consent",
+  "value": {
+    "type": "about:blank",
+    "title": "Consent required",
+    "status": 409,
+    "code": "CONSENT_REQUIRED",
+    "requestId": "fixture-consent-409"
+  }
+}
