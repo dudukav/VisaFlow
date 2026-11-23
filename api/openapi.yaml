@@ -25,6 +25,7 @@ paths:
     post:
       tags: [Auth]
       operationId: authenticateWithTelegram
+      x-mvp: true
       security: []
       requestBody: {$ref: '#/components/requestBodies/TelegramAuth'}
       responses:
@@ -34,24 +35,28 @@ paths:
     delete:
       tags: [Auth]
       operationId: endSession
+      x-mvp: true
       responses:
         '204': {description: Session revoked and cookie expired}
   /me:
     get:
       tags: [Profile]
       operationId: getCurrentUser
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/UserProfile'}
   /consents/current:
     get:
       tags: [Profile]
       operationId: getCurrentConsent
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/Consent'}
   /consents/current/acceptance:
     put:
       tags: [Profile]
       operationId: acceptCurrentConsent
+      x-mvp: true
       requestBody: {$ref: '#/components/requestBodies/AcceptConsent'}
       responses:
         '200': {$ref: '#/components/responses/ConsentAcceptance'}
@@ -73,18 +78,21 @@ paths:
     get:
       tags: [Reference data]
       operationId: getApplicationOptions
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/ApplicationOptions'}
   /applications:
     get:
       tags: [Applications]
       operationId: listApplications
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/Cursor'}, {$ref: '#/components/parameters/Limit'}]
       responses:
         '200': {$ref: '#/components/responses/ApplicationPage'}
     post:
       tags: [Applications]
       operationId: createApplication
+      x-mvp: true
       requestBody: {$ref: '#/components/requestBodies/CreateApplication'}
       responses:
         '201': {$ref: '#/components/responses/Application'}
@@ -94,12 +102,14 @@ paths:
     get:
       tags: [Applications]
       operationId: getApplication
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/Application'}
         '404': {$ref: '#/components/responses/NotFound'}
     patch:
       tags: [Applications]
       operationId: updateApplication
+      x-mvp: true
       description: Mutable data changes mark the checklist stale until explicit recalculation.
       requestBody: {$ref: '#/components/requestBodies/UpdateApplication'}
       responses:
@@ -109,6 +119,7 @@ paths:
     delete:
       tags: [Applications]
       operationId: deleteDraftApplication
+      x-mvp: true
       description: Only drafts can be deleted. Activated applications must be closed.
       responses:
         '204': {description: Draft deleted}
@@ -117,6 +128,7 @@ paths:
     post:
       tags: [Applications]
       operationId: closeApplication
+      x-mvp: true
       description: Final action; the consumed credit is not returned and personal document data is deleted after 30 days.
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       responses:
@@ -127,11 +139,13 @@ paths:
     get:
       tags: [Applications]
       operationId: getApplicant
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/Applicant'}
     patch:
       tags: [Applications]
       operationId: updateApplicant
+      x-mvp: true
       requestBody: {$ref: '#/components/requestBodies/UpdateApplicant'}
       responses:
         '200': {$ref: '#/components/responses/Applicant'}
@@ -141,11 +155,13 @@ paths:
     get:
       tags: [Applications]
       operationId: listMembers
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/MemberList'}
     post:
       tags: [Applications]
       operationId: createMember
+      x-mvp: true
       requestBody: {$ref: '#/components/requestBodies/CreateMember'}
       responses:
         '201': {$ref: '#/components/responses/Member'}
@@ -156,6 +172,7 @@ paths:
     patch:
       tags: [Applications]
       operationId: updateMember
+      x-mvp: true
       requestBody: {$ref: '#/components/requestBodies/UpdateMember'}
       responses:
         '200': {$ref: '#/components/responses/Member'}
@@ -163,6 +180,7 @@ paths:
     delete:
       tags: [Applications]
       operationId: deleteMember
+      x-mvp: true
       responses:
         '204': {description: Member removed}
         '409': {$ref: '#/components/responses/Conflict'}
@@ -190,6 +208,7 @@ paths:
     get:
       tags: [Checklist]
       operationId: getChecklist
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}]
       responses:
         '200': {$ref: '#/components/responses/Checklist'}
@@ -198,6 +217,7 @@ paths:
     post:
       tags: [Checklist]
       operationId: recalculateChecklist
+      x-mvp: true
       description: Applies current data and latest ruleset; matching completed items are retained.
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       responses:
@@ -207,6 +227,7 @@ paths:
     patch:
       tags: [Checklist]
       operationId: updateChecklistItem
+      x-mvp: true
       description: Action items are manual; document item statuses are automatic.
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/ChecklistItemId'}]
       requestBody: {$ref: '#/components/requestBodies/UpdateChecklistItem'}
@@ -224,6 +245,7 @@ paths:
     get:
       tags: [Documents]
       operationId: listDocuments
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}]
       responses:
         '200': {$ref: '#/components/responses/DocumentList'}
@@ -231,6 +253,7 @@ paths:
     post:
       tags: [Documents]
       operationId: createDocumentUploadRequest
+      x-mvp: true
       description: Creates a signed upload URL for one multi-page PDF of at most 15 MiB.
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       requestBody: {$ref: '#/components/requestBodies/CreateDocumentUpload'}
@@ -242,6 +265,7 @@ paths:
     post:
       tags: [Documents]
       operationId: completeDocumentUpload
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/DocumentId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       requestBody: {$ref: '#/components/requestBodies/CompleteDocumentUpload'}
       responses:
@@ -252,12 +276,14 @@ paths:
     get:
       tags: [Documents]
       operationId: getDocument
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/Document'}
         '404': {$ref: '#/components/responses/NotFound'}
     delete:
       tags: [Documents]
       operationId: deleteDocument
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/IdempotencyKey'}]
       responses:
         '202': {$ref: '#/components/responses/Document'}
@@ -265,6 +291,7 @@ paths:
     post:
       tags: [Documents]
       operationId: retryDocumentProcessing
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/DocumentId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       responses:
         '202': {$ref: '#/components/responses/Document'}
@@ -274,11 +301,13 @@ paths:
     get:
       tags: [Documents]
       operationId: getExtractedDocumentFields
+      x-mvp: true
       responses:
         '200': {$ref: '#/components/responses/ExtractedFieldsDraft'}
     put:
       tags: [Documents]
       operationId: saveExtractedDocumentFields
+      x-mvp: true
       description: Autosaves an incomplete draft using optimistic revision control.
       requestBody: {$ref: '#/components/requestBodies/SaveExtractedFields'}
       responses:
@@ -288,6 +317,7 @@ paths:
     post:
       tags: [Documents]
       operationId: confirmExtractedDocumentFields
+      x-mvp: true
       description: Confirms one revision and synchronously runs deterministic checks.
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/DocumentId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
       requestBody: {$ref: '#/components/requestBodies/ConfirmExtractedFields'}
@@ -299,6 +329,7 @@ paths:
     get:
       tags: [Documents]
       operationId: listDocumentChecks
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}, {$ref: '#/components/parameters/DocumentId'}]
       responses:
         '200': {$ref: '#/components/responses/CheckResult'}
@@ -306,6 +337,7 @@ paths:
     get:
       tags: [Documents]
       operationId: listApplicationChecks
+      x-mvp: true
       parameters: [{$ref: '#/components/parameters/ApplicationId'}]
       responses:
         '200': {$ref: '#/components/responses/CheckResult'}
