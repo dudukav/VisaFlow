@@ -80,7 +80,10 @@ export function ApplicationsPage() {
               >
                 <div>
                   <h2>{countryNames.of(application.country)}</h2>
-                  <p className="field-hint">
+                  <p
+                    className="field-hint"
+                    id={'application-dates-' + application.id}
+                  >
                     <time dateTime={application.tripStartsOn}>
                       {dateFormat.format(new Date(application.tripStartsOn))}
                     </time>
@@ -90,9 +93,18 @@ export function ApplicationsPage() {
                     </time>
                   </p>
                 </div>
-                <span className="application-status-label">
-                  {statusLabels[application.status]}
-                </span>
+                <div className="application-list-actions">
+                  <span className="application-status-label">
+                    {statusLabels[application.status]}
+                  </span>
+                  <Link
+                    className="button button-secondary"
+                    to={'/applications/' + application.id + '/checklist'}
+                    aria-describedby={'application-dates-' + application.id}
+                  >
+                    Открыть чеклист
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

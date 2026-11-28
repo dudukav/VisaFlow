@@ -12,6 +12,7 @@ import { AuthRejected, signIn } from './api/client'
 import type { components } from './api/schema'
 import { ApplicationsPage } from './features/applications/ApplicationsPage'
 import { NewApplicationPage } from './features/applications/NewApplicationPage'
+import { ChecklistPage } from './features/checklist/ChecklistPage'
 import { ApplicantLayout } from './layout/ApplicantLayout'
 
 type LoginState =
@@ -107,6 +108,10 @@ export default function App({ initData }: { initData: string }) {
           >
             <Route path="applications" element={<ApplicationsPage />} />
             <Route path="applications/new" element={<NewApplicationPage />} />
+            <Route
+              path="applications/:applicationId/checklist"
+              element={<ChecklistPage />}
+            />
           </Route>
           <Route
             path="profile"
