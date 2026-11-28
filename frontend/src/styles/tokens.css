@@ -1,0 +1,18 @@
+:root {
+  color-scheme: light;
+  --background: #f1f5f9;
+  --surface: #ffffff;
+  --surface-muted: #e8eff6;
+  --text: #142439;
+  --text-muted: #47596d;
+  --border: #c6d2df;
+  --control-border: #75879a;
+  --accent: #135c91;
+  --accent-hover: #0c4775;
+  --focus: #005da8;
+  --danger: #a72926;
+  --radius: 0.875rem;
+  --shadow: 0 0.5rem 2rem rgb(20 36 57 / 7%);
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --content-width: 60rem;
+}

@@ -1,7 +1,8 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 import createClient from 'openapi-fetch'
-import schemas from './auth-schemas.json'
+import applicationSchemas from './application-schemas.json'
+import authSchemas from './auth-schemas.json'
 import type { components, paths } from './schema'
 
 export const API_BASE = '/api/v1'
@@ -12,14 +13,37 @@ type Schema = components['schemas']
 const ajv = new Ajv()
 addFormats(ajv)
 
-const schemaId = 'urn:visaflow:auth'
-ajv.addSchema(schemas, schemaId)
+const authSchemaId = 'urn:visaflow:auth'
+const applicationSchemaId = 'urn:visaflow:application'
+ajv.addSchema(authSchemas, authSchemaId)
+ajv.addSchema(applicationSchemas, applicationSchemaId)
 
 const isSession = ajv.compile<Schema['AuthSession']>({
-  $ref: schemaId + '#/definitions/AuthSession',
+  $ref: authSchemaId + '#/definitions/AuthSession',
 })
 const isProfile = ajv.compile<Schema['UserProfile']>({
-  $ref: schemaId + '#/definitions/UserProfile',
+  $ref: authSchemaId + '#/definitions/UserProfile',
+})
+const isApplicationOptions = ajv.compile<Schema['ApplicationOptions']>({
+  $ref: applicationSchemaId + '#/definitions/ApplicationOptions',
+})
+const isApplicationPage = ajv.compile<Schema['ApplicationPage']>({
+  $ref: applicationSchemaId + '#/definitions/ApplicationPage',
+})
+const isApplication = ajv.compile<Schema['Application']>({
+  $ref: applicationSchemaId + '#/definitions/Application',
+})
+const isValidationProblem = ajv.compile<Schema['ValidationProblem']>({
+  $ref: applicationSchemaId + '#/definitions/ValidationProblem',
+})
+export const isCreateApplicationInput = ajv.compile<
+  Schema['CreateApplicationInput']
+>({
+  $ref: applicationSchemaId + '#/definitions/CreateApplicationInput',
+})
+export const isCalendarDate = ajv.compile<string>({
+  type: 'string',
+  format: 'date',
 })
 
 export class AuthRejected extends Error {}
@@ -40,4 +64,43 @@ export async function signIn(initData: string) {
   }
 
   return profile.data
+}
+
+export async function getApplicationOptions(signal?: AbortSignal) {
+  const result = await api.GET('/application-options', { signal })
+  if (result.response.status === 401) throw new AuthRejected()
+  if (!result.response.ok || !isApplicationOptions(result.data)) {
+    throw new Error('Invalid application options response')
+  }
+
+  return result.data
+}
+
+export async function listApplications(signal?: AbortSignal) {
+  const result = await api.GET('/applications', { signal })
+  if (result.response.status === 401) throw new AuthRejected()
+  if (!result.response.ok || !isApplicationPage(result.data)) {
+    throw new Error('Invalid application list response')
+  }
+
+  return result.data
+}
+
+type CreateApplicationResult =
+  | { kind: 'created'; application: Schema['Application'] }
+  | { kind: 'invalid'; violations: Schema['FieldViolation'][] }
+
+export async function createApplication(
+  body: Schema['CreateApplicationInput'],
+): Promise<CreateApplicationResult> {
+  const result = await api.POST('/applications', { body })
+  if (result.response.status === 401) throw new AuthRejected()
+  if (result.response.status === 422 && isValidationProblem(result.error)) {
+    return { kind: 'invalid', violations: result.error.violations }
+  }
+  if (result.response.status === 201 && isApplication(result.data)) {
+    return { kind: 'created', application: result.data }
+  }
+
+  throw new Error('Invalid application creation response')
 }

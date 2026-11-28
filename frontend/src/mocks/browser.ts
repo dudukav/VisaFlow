@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { API_BASE } from '../api/client'
 import type { components } from '../api/schema'
+import { applicationHandlers } from './applications'
 
 type Schema = components['schemas']
 
@@ -20,18 +21,20 @@ const session = {
 
 let authenticated = false
 
+function problemResponse(problem: Schema['Problem']) {
+  return HttpResponse.json(problem, {
+    status: problem.status,
+    headers: { 'Content-Type': 'application/problem+json' },
+  })
+}
+
 function unauthorized() {
-  const problem = {
+  return problemResponse({
     type: 'about:blank',
     title: 'Unauthorized',
     status: 401,
     code: 'UNAUTHORIZED',
     requestId: 'mock-auth-401',
-  } satisfies Schema['Problem']
-
-  return HttpResponse.json(problem, {
-    status: 401,
-    headers: { 'Content-Type': 'application/problem+json' },
   })
 }
 
@@ -57,5 +60,14 @@ export const worker = setupWorker(
     if (!authenticated) return unauthorized()
 
     return HttpResponse.json(user)
+  }),
+
+  ...applicationHandlers({
+    ownerId: user.id,
+    scenario: new URLSearchParams(window.location.search).get(
+      'mockApplications',
+    ),
+    getAuthError: () => (authenticated ? undefined : unauthorized()),
+    problemResponse,
   }),
 )
