@@ -3,6 +3,7 @@ import { setupWorker } from 'msw/browser'
 import { API_BASE } from '../api/client'
 import type { components } from '../api/schema'
 import { applicationHandlers } from './applications'
+import { checklistHandlers } from './checklist'
 
 type Schema = components['schemas']
 
@@ -20,6 +21,8 @@ const session = {
 } satisfies Schema['AuthSession']
 
 let authenticated = false
+const applications: Schema['Application'][] = []
+const scenarios = new URLSearchParams(window.location.search)
 
 function problemResponse(problem: Schema['Problem']) {
   return HttpResponse.json(problem, {
@@ -37,6 +40,8 @@ function unauthorized() {
     requestId: 'mock-auth-401',
   })
 }
+
+const getAuthError = () => (authenticated ? undefined : unauthorized())
 
 export const worker = setupWorker(
   http.post(API_BASE + '/auth/telegram', async ({ request }) => {
@@ -63,11 +68,20 @@ export const worker = setupWorker(
   }),
 
   ...applicationHandlers({
+    applications,
     ownerId: user.id,
-    scenario: new URLSearchParams(window.location.search).get(
-      'mockApplications',
-    ),
-    getAuthError: () => (authenticated ? undefined : unauthorized()),
+    scenario: scenarios.get('mockApplications'),
+    getAuthError,
+    problemResponse,
+  }),
+  ...checklistHandlers({
+    ownerId: user.id,
+    hasOwnedApplication: (applicationId) =>
+      applications.some(
+        ({ id, ownerId }) => id === applicationId && ownerId === user.id,
+      ),
+    scenario: scenarios.get('mockChecklist'),
+    getAuthError,
     problemResponse,
   }),
 )

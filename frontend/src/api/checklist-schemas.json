@@ -1,0 +1,214 @@
+{
+  "definitions": {
+    "Checklist": {
+      "type": "object",
+      "required": [
+        "applicationId",
+        "rulesetId",
+        "rulesetVersion",
+        "generatedAt",
+        "progress",
+        "requirementsUpdateRequired",
+        "items"
+      ],
+      "properties": {
+        "applicationId": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "rulesetId": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "rulesetVersion": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "progress": {
+          "$ref": "#/definitions/ChecklistProgress"
+        },
+        "requirementsUpdateRequired": {
+          "type": "boolean"
+        },
+        "requirementsUpdate": {
+          "$ref": "#/definitions/RequirementsUpdate"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChecklistItem"
+          }
+        }
+      }
+    },
+    "ChecklistItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "scope",
+        "status",
+        "ruleId",
+        "sourceId"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "action",
+            "document"
+          ]
+        },
+        "documentType": {
+          "type": "string",
+          "enum": [
+            "visa_application_form",
+            "employment_certificate",
+            "bank_statement",
+            null
+          ],
+          "nullable": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "application",
+            "participant"
+          ]
+        },
+        "subject": {
+          "$ref": "#/definitions/Subject"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "todo",
+            "in_progress",
+            "done",
+            "not_applicable"
+          ]
+        },
+        "ruleId": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "sourceId": {
+          "$ref": "#/definitions/Uuid"
+        }
+      }
+    },
+    "ChecklistProgress": {
+      "type": "object",
+      "required": [
+        "completed",
+        "total",
+        "percent"
+      ],
+      "properties": {
+        "completed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "RequirementsUpdate": {
+      "type": "object",
+      "required": [
+        "available",
+        "summary",
+        "detectedAt"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "detectedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Subject": {
+      "type": "object",
+      "nullable": true,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "applicant",
+            "family_member"
+          ]
+        },
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        }
+      }
+    },
+    "UpdateChecklistItemInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "todo",
+            "in_progress",
+            "done",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "UpdateChecklistItemResult": {
+      "type": "object",
+      "required": [
+        "item",
+        "progress"
+      ],
+      "properties": {
+        "item": {
+          "$ref": "#/definitions/ChecklistItem"
+        },
+        "progress": {
+          "$ref": "#/definitions/ChecklistProgress"
+        }
+      }
+    },
+    "Uuid": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}

@@ -25,6 +25,7 @@ const options = {
 } satisfies Schema['ApplicationOptions']
 
 type ApplicationMockContext = {
+  applications: Schema['Application'][]
   ownerId: string
   scenario: string | null
   getAuthError: () => Response | undefined
@@ -32,12 +33,12 @@ type ApplicationMockContext = {
 }
 
 export function applicationHandlers({
+  applications,
   ownerId,
   scenario,
   getAuthError,
   problemResponse,
 }: ApplicationMockContext) {
-  const applications: Schema['Application'][] = []
   let pendingScenario = scenario
 
   function consumeScenario(scenario: string) {

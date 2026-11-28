@@ -58,3 +58,29 @@ await writeSchemas(
   ],
   { Application: application },
 )
+
+const checklistItem = schemas.ChecklistItem
+const documentType = checklistItem.properties.documentType
+// Ajv needs null in the enum as well as nullable to match the generated type.
+const checklistItemWithNullableDocumentType = {
+  ...checklistItem,
+  properties: {
+    ...checklistItem.properties,
+    documentType: { ...documentType, enum: [...documentType.enum, null] },
+  },
+}
+
+await writeSchemas(
+  'checklist-schemas.json',
+  [
+    'Checklist',
+    'ChecklistItem',
+    'ChecklistProgress',
+    'RequirementsUpdate',
+    'Subject',
+    'UpdateChecklistItemInput',
+    'UpdateChecklistItemResult',
+    'Uuid',
+  ],
+  { ChecklistItem: checklistItemWithNullableDocumentType },
+)

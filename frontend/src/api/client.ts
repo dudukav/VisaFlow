@@ -3,6 +3,7 @@ import addFormats from 'ajv-formats'
 import createClient from 'openapi-fetch'
 import applicationSchemas from './application-schemas.json'
 import authSchemas from './auth-schemas.json'
+import checklistSchemas from './checklist-schemas.json'
 import type { components, paths } from './schema'
 
 export const API_BASE = '/api/v1'
@@ -15,8 +16,10 @@ addFormats(ajv)
 
 const authSchemaId = 'urn:visaflow:auth'
 const applicationSchemaId = 'urn:visaflow:application'
+const checklistSchemaId = 'urn:visaflow:checklist'
 ajv.addSchema(authSchemas, authSchemaId)
 ajv.addSchema(applicationSchemas, applicationSchemaId)
+ajv.addSchema(checklistSchemas, checklistSchemaId)
 
 const isSession = ajv.compile<Schema['AuthSession']>({
   $ref: authSchemaId + '#/definitions/AuthSession',
@@ -44,6 +47,18 @@ export const isCreateApplicationInput = ajv.compile<
 export const isCalendarDate = ajv.compile<string>({
   type: 'string',
   format: 'date',
+})
+
+const isChecklist = ajv.compile<Schema['Checklist']>({
+  $ref: checklistSchemaId + '#/definitions/Checklist',
+})
+const isChecklistItemResult = ajv.compile<Schema['UpdateChecklistItemResult']>({
+  $ref: checklistSchemaId + '#/definitions/UpdateChecklistItemResult',
+})
+export const isChecklistItemUpdate = ajv.compile<
+  Schema['UpdateChecklistItemInput']
+>({
+  $ref: checklistSchemaId + '#/definitions/UpdateChecklistItemInput',
 })
 
 export class AuthRejected extends Error {}
@@ -103,4 +118,49 @@ export async function createApplication(
   }
 
   throw new Error('Invalid application creation response')
+}
+
+export async function getChecklist(
+  applicationId: string,
+  signal?: AbortSignal,
+) {
+  const result = await api.GET('/applications/{applicationId}/checklist', {
+    params: { path: { applicationId } },
+    signal,
+  })
+  if (result.response.status === 401) throw new AuthRejected()
+  if (
+    !result.response.ok ||
+    !isChecklist(result.data) ||
+    result.data.applicationId !== applicationId
+  ) {
+    throw new Error('Invalid checklist response')
+  }
+
+  return result.data
+}
+
+export async function updateChecklistItem(
+  applicationId: string,
+  itemId: string,
+  status: Schema['UpdateChecklistItemInput']['status'],
+) {
+  const result = await api.PATCH(
+    '/applications/{applicationId}/checklist/items/{itemId}',
+    {
+      params: { path: { applicationId, itemId } },
+      headers: { 'Content-Type': 'application/merge-patch+json' },
+      body: { status },
+    },
+  )
+  if (result.response.status === 401) throw new AuthRejected()
+  if (
+    !result.response.ok ||
+    !isChecklistItemResult(result.data) ||
+    result.data.item.id !== itemId
+  ) {
+    throw new Error('Invalid checklist item update response')
+  }
+
+  return result.data
 }
