@@ -1,69 +1,40 @@
-# React + TypeScript + Vite
+# VisaFlow Mini App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Локальный запуск с mock API
 
-Currently, two official plugins are available:
+Из каталога `frontend`:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm ci
+VITE_API_MOCK=1 npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Открой адрес Vite и нажми «Войти». MSW подставляет тестовый Telegram-профиль, справочники и заявки. Созданные черновики хранятся до перезагрузки вкладки. Для формы используй синтетические данные.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Проверка создания заявки
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Открой «Мои заявки» и проверь пустой список.
+2. Перейди к созданию, отправь пустую форму и проверь сообщения у полей и фокус на первом ошибочном поле. Затем проверь ошибку, когда окончание поездки раньше её начала.
+3. Заполни все поля. После сохранения должен появиться черновик в списке.
+4. Повтори сценарий на ширинах 375 и 1280 px. Пройди навигацию и форму через Tab, Shift+Tab и Enter.
+
+Для проверки ошибок открой соответствующий адрес заново и войди:
+
+| Адрес                                                      | Ожидаемое поведение                                                                                       |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `/applications?mockApplications=list-error-once`           | Первый запрос списка завершается ошибкой. «Повторить» загружает список.                                   |
+| `/applications/new?mockApplications=options-error-once`    | Первый запрос справочников завершается ошибкой. «Повторить» открывает форму.                              |
+| `/applications/new?mockApplications=create-error-once`     | Первое сохранение завершается ошибкой до записи. Значения остаются в форме, повтор создаёт один черновик. |
+| `/applications/new?mockApplications=validation-error-once` | При локально валидной форме первый запрос получает 422. Ошибка показывается у поля, значения сохраняются. |
+| `/profile?mockAuth=reject`                                 | Попытка входа показывает ошибку сессии.                                                                   |
+
+## Проверки
+
+```sh
+npm run api:generate
+npm run type-check
+npm run lint
+npm run build
 ```
+
+`api:generate` обновляет TypeScript-типы и runtime-схемы из `../api/openapi.yaml`.

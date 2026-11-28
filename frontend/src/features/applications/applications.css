@@ -1,0 +1,121 @@
+.applications-page,
+.application-form,
+.application-list,
+.applications-status {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.applications-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.applications-header h1,
+.applications-status p,
+.application-list-item h2,
+.application-list-item p,
+.application-field p {
+  margin: 0;
+}
+
+.applications-card {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.applications-status {
+  justify-items: start;
+}
+
+.applications-message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+.applications-message-error,
+.application-field-error {
+  color: var(--danger);
+}
+
+.application-form {
+  gap: 1.5rem;
+}
+
+.application-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem 1.5rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.application-field {
+  display: grid;
+  align-content: start;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.application-field label {
+  font-weight: 600;
+}
+
+.application-field [aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.application-field-error {
+  font-size: 0.875rem;
+}
+
+.application-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.application-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.application-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.application-list-item h2 {
+  margin-bottom: 0.25rem;
+}
+
+.application-status-label {
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+@media (min-width: 42rem) {
+  .application-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

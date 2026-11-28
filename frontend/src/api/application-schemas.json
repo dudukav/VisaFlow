@@ -1,0 +1,339 @@
+{
+  "definitions": {
+    "Option": {
+      "type": "object",
+      "required": [
+        "code",
+        "label"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "ApplicationOptions": {
+      "type": "object",
+      "required": [
+        "countries",
+        "visaTypes",
+        "submissionCities",
+        "employmentStatuses",
+        "accessModes"
+      ],
+      "properties": {
+        "countries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "visaTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "submissionCities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "employmentStatuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "accessModes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        }
+      }
+    },
+    "EmploymentStatus": {
+      "type": "string",
+      "enum": [
+        "employed",
+        "self_employed",
+        "student",
+        "retired",
+        "unemployed"
+      ]
+    },
+    "AccessMode": {
+      "type": "string",
+      "enum": [
+        "organizer_only",
+        "shared"
+      ]
+    },
+    "ApplicationStatus": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "awaiting_activation",
+        "active",
+        "upgrade_required",
+        "closed"
+      ]
+    },
+    "CreateApplicationInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "country",
+        "visaType",
+        "tripStartsOn",
+        "tripEndsOn",
+        "submissionCityCode",
+        "applicantDateOfBirth",
+        "employmentStatus",
+        "accessMode"
+      ],
+      "properties": {
+        "country": {
+          "type": "string",
+          "enum": [
+            "IT"
+          ]
+        },
+        "visaType": {
+          "type": "string",
+          "enum": [
+            "tourist"
+          ]
+        },
+        "tripStartsOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "tripEndsOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "submissionCityCode": {
+          "type": "string"
+        },
+        "applicantDateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "employmentStatus": {
+          "$ref": "#/definitions/EmploymentStatus"
+        },
+        "accessMode": {
+          "$ref": "#/definitions/AccessMode"
+        },
+        "organizerConsentAttested": {
+          "type": "boolean",
+          "description": "Required for organizer_only when other adults are added"
+        }
+      }
+    },
+    "Application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "country",
+        "visaType",
+        "tripStartsOn",
+        "tripEndsOn",
+        "submissionCityCode",
+        "applicantDateOfBirth",
+        "employmentStatus",
+        "accessMode",
+        "id",
+        "ownerId",
+        "status",
+        "participantCount",
+        "requirementsUpdateRequired",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "country": {
+          "type": "string",
+          "enum": [
+            "IT"
+          ]
+        },
+        "visaType": {
+          "type": "string",
+          "enum": [
+            "tourist"
+          ]
+        },
+        "tripStartsOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "tripEndsOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "submissionCityCode": {
+          "type": "string"
+        },
+        "applicantDateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "employmentStatus": {
+          "$ref": "#/definitions/EmploymentStatus"
+        },
+        "accessMode": {
+          "$ref": "#/definitions/AccessMode"
+        },
+        "organizerConsentAttested": {
+          "type": "boolean",
+          "description": "Required for organizer_only when other adults are added"
+        },
+        "id": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "ownerId": {
+          "$ref": "#/definitions/Uuid"
+        },
+        "status": {
+          "$ref": "#/definitions/ApplicationStatus"
+        },
+        "visitDate": {
+          "type": "string",
+          "format": "date",
+          "nullable": true
+        },
+        "participantCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rulesetId": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": true
+        },
+        "rulesetVersion": {
+          "type": "string",
+          "nullable": true
+        },
+        "requirementsUpdateRequired": {
+          "type": "boolean"
+        },
+        "retentionScheduledFor": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApplicationPage": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Application"
+          }
+        },
+        "nextCursor": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "Problem": {
+      "type": "object",
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "requestId"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 400,
+          "maximum": 599
+        },
+        "detail": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "requestId": {
+          "type": "string"
+        }
+      }
+    },
+    "FieldViolation": {
+      "type": "object",
+      "required": [
+        "field",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ValidationProblem": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Problem"
+        },
+        {
+          "type": "object",
+          "required": [
+            "violations"
+          ],
+          "properties": {
+            "violations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FieldViolation"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Uuid": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}

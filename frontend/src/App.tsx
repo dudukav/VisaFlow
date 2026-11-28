@@ -1,12 +1,56 @@
-import { useEffect, useState } from 'react'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  BrowserRouter,
+  Link,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom'
 import { AuthRejected, signIn } from './api/client'
 import type { components } from './api/schema'
+import { ApplicationsPage } from './features/applications/ApplicationsPage'
+import { NewApplicationPage } from './features/applications/NewApplicationPage'
+import { ApplicantLayout } from './layout/ApplicantLayout'
 
 type LoginState =
   | { status: 'idle' | 'loading' }
   | { status: 'success'; user: components['schemas']['UserProfile'] }
   | { status: 'error'; message: string }
+
+type SignInPromptProps = {
+  initData: string
+  login: LoginState
+  onLogin: () => void
+}
+
+function SignInPrompt({ initData, login, onLogin }: SignInPromptProps) {
+  if (!initData) return <p>Откройте VisaFlow из Telegram.</p>
+
+  const pending = login.status === 'loading'
+  return (
+    <>
+      {login.status === 'error' && <p role="alert">{login.message}</p>}
+      <button
+        className="button"
+        disabled={pending}
+        onClick={onLogin}
+        type="button"
+      >
+        Войти
+      </button>
+      <p className="session-status" role="status">
+        {pending && 'Входим в VisaFlow…'}
+      </p>
+    </>
+  )
+}
+
+function ApplicationsRedirect() {
+  const { search } = useLocation()
+  return <Navigate to={{ pathname: '/applications', search }} replace />
+}
 
 export default function App({ initData }: { initData: string }) {
   const [login, setLogin] = useState<LoginState>({ status: 'idle' })
@@ -26,52 +70,70 @@ export default function App({ initData }: { initData: string }) {
       const message =
         error instanceof AuthRejected
           ? 'Сессия отклонена. Откройте приложение заново из Telegram.'
-          : 'Не удалось загрузить профиль. Попробуйте ещё раз.'
+          : 'Не удалось войти. Попробуйте ещё раз.'
       setLogin({ status: 'error', message })
     }
   }
 
+  const onAuthRejected = useCallback(() => {
+    setLogin({
+      status: 'error',
+      message: 'Сессия завершилась. Войдите снова.',
+    })
+  }, [])
+
+  const signInPrompt = (
+    <SignInPrompt initData={initData} login={login} onLogin={handleLogin} />
+  )
+
   return (
     <BrowserRouter>
-      <main>
-        <h1>VisaFlow</h1>
-        <nav aria-label="Основная навигация">
-          <Link to="/">Главная</Link>
-          {' · '}
-          <Link to="/profile">Профиль</Link>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<p>Подготовка визовой заявки</p>} />
+      <Routes>
+        <Route
+          element={<ApplicantLayout signedIn={login.status === 'success'} />}
+        >
+          <Route index element={<ApplicationsRedirect />} />
           <Route
-            path="/profile"
             element={
-              <section>
-                <h2>Профиль</h2>
-                {!initData && <p>Откройте VisaFlow из Telegram.</p>}
-                {initData && login.status !== 'success' && (
-                  <button
-                    disabled={login.status === 'loading'}
-                    onClick={handleLogin}
-                  >
-                    Войти
-                  </button>
-                )}
-                <div role="status">
-                  {login.status === 'loading' && <p>Загружаем профиль…</p>}
-                  {login.status === 'success' && (
-                    <p>{login.user.telegramDisplayName}</p>
-                  )}
-                </div>
-                {login.status === 'error' && (
-                  <p role="alert">{login.message}</p>
+              login.status === 'success' ? (
+                <Outlet context={{ onAuthRejected }} />
+              ) : (
+                <section className="session-card">
+                  <h1 tabIndex={-1}>Вход в VisaFlow</h1>
+                  {signInPrompt}
+                </section>
+              )
+            }
+          >
+            <Route path="applications" element={<ApplicationsPage />} />
+            <Route path="applications/new" element={<NewApplicationPage />} />
+          </Route>
+          <Route
+            path="profile"
+            element={
+              <section className="session-card">
+                <h1 tabIndex={-1}>Профиль</h1>
+                {login.status === 'success' ? (
+                  <p>{login.user.telegramDisplayName}</p>
+                ) : (
+                  signInPrompt
                 )}
               </section>
             }
           />
-          <Route path="*" element={<p>Страница не найдена.</p>} />
-        </Routes>
-      </main>
+          <Route
+            path="*"
+            element={
+              <section className="session-card">
+                <h1 tabIndex={-1}>Страница не найдена</h1>
+                <Link className="button" to="/applications">
+                  К моим заявкам
+                </Link>
+              </section>
+            }
+          />
+        </Route>
+      </Routes>
     </BrowserRouter>
   )
 }
